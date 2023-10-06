@@ -5,17 +5,16 @@ using Random = UnityEngine.Random;
 
 public static class ProceduralGenerationAlgorithms
 {
-    
-    public static HashSet<Vector2Int> SimpleRandomWalk(Vector2Int startPosition, int walkLength)
+    public static HashSet<Vector3Int> SimpleRandomWalk(Vector3Int startPosition, int walkLength)
     {
-        HashSet<Vector2Int> path = new HashSet<Vector2Int>();
+        HashSet<Vector3Int> path = new HashSet<Vector3Int>();
 
         path.Add(startPosition);
         var previousPosition = startPosition;
 
         for (int i = 0; i < walkLength; i++)
         {
-            var newPosition = previousPosition + Direction2D.GetRandomCardinalDirection();
+            var newPosition = previousPosition + Direction3D.GetRandomCardinalDirection();
             path.Add(newPosition);
             previousPosition = newPosition;
         }
@@ -23,10 +22,10 @@ public static class ProceduralGenerationAlgorithms
         return path;
     }
 
-    public static List<Vector2Int> RandomWalkCorridor(Vector2Int startPosition, int corridorLength)
+    public static List<Vector3Int> RandomWalkCorridor(Vector3Int startPosition, int corridorLength)
     {
-        List<Vector2Int> corridor = new List<Vector2Int>();
-        var direction = Direction2D.GetRandomCardinalDirection();
+        List<Vector3Int> corridor = new List<Vector3Int>();
+        var direction = Direction3D.GetRandomCardinalDirection();
         var currentPosition = startPosition;
         corridor.Add(currentPosition);
 
@@ -54,10 +53,12 @@ public static class ProceduralGenerationAlgorithms
                     if (room.size.y >= minHeight * 2)
                     {
                         SplitHorizontally(minWidth, roomsQueue, room);
-                    } else if(room.size.x >= minWidth * 2)
+                    }
+                    else if (room.size.x >= minWidth * 2)
                     {
                         SplitVertically(minHeight, roomsQueue, room);
-                    } else if (room.size.x >= minWidth && room.size.y >= minHeight)
+                    }
+                    else if (room.size.x >= minWidth && room.size.y >= minHeight)
                     {
                         roomsList.Add(room);
                     }
@@ -101,39 +102,38 @@ public static class ProceduralGenerationAlgorithms
     }
 }
 
-
-public static class Direction2D
+public static class Direction3D
 {
-    public static List<Vector2Int> cardinalDirectionsList = new List<Vector2Int>
-    { 
-        new Vector2Int(0, 1), //Up
-        new Vector2Int(1, 0), //Right
-        new Vector2Int(0, -1), //Down
-        new Vector2Int(-1, 0) //Left
+    // Cardinal directions as a list
+    public static readonly List<Vector3Int> cardinalDirectionsList = new List<Vector3Int>
+    {
+        new Vector3Int(0, 0, 1), // Up
+        new Vector3Int(1, 0, 0), // Right
+        new Vector3Int(0, 0, -1), // Down
+        new Vector3Int(-1, 0, 0) // Left
     };
 
-    public static List<Vector2Int> diagonalDirectionsList = new List<Vector2Int>
+    // Diagonal directions as a list
+    public static readonly List<Vector3Int> diagonalDirectionsList = new List<Vector3Int>
     {
-        new Vector2Int(1, 1), //Up - Right
-        new Vector2Int(1, -1), //Right - Down
-        new Vector2Int(-1, -1), //Down - Left
-        new Vector2Int(-1, 1) //Left - Up
+        new Vector3Int(1, 0, 1), // Up-Right
+        new Vector3Int(-1, 0, 1), // Up-Left
+        new Vector3Int(1, 0, -1), // Down-Right
+        new Vector3Int(-1, 0, -1) // Down-Left
     };
 
-    public static List<Vector2Int> eightDirectionsList = new List<Vector2Int>
+    // Get a random cardinal direction
+    public static Vector3Int GetRandomCardinalDirection()
     {
-        new Vector2Int(0, 1), //Up
-        new Vector2Int(1, 1), //Up - Right
-        new Vector2Int(1, 0), //Right
-        new Vector2Int(1, -1), //Right - Down
-        new Vector2Int(0, -1), //Down
-        new Vector2Int(-1, -1), //Down - Left
-        new Vector2Int(-1, 0), //Left
-        new Vector2Int(-1, 1) //Left - Up
-    };
+        int index = Random.Range(0, cardinalDirectionsList.Count);
+        return cardinalDirectionsList[index];
+    }
 
-    public static Vector2Int GetRandomCardinalDirection()
+    // Get a random diagonal direction
+    public static Vector3Int GetRandomDiagonalDirection()
     {
-        return cardinalDirectionsList[Random.Range(0, cardinalDirectionsList.Count)];
+        int index = Random.Range(0, diagonalDirectionsList.Count);
+        return diagonalDirectionsList[index];
     }
 }
+

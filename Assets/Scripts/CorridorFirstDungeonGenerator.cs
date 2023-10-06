@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -19,14 +18,14 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkMapGenerator
 
     private void CorridorFirstGeneration()
     {
-        HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
-        HashSet<Vector2Int> potentialRoomPositions = new HashSet<Vector2Int>();
+        HashSet<Vector3Int> floorPositions = new HashSet<Vector3Int>();
+        HashSet<Vector3Int> potentialRoomPositions = new HashSet<Vector3Int>();
 
-        List<List<Vector2Int>> corridors = CreateCorridors(floorPositions, potentialRoomPositions);
+        List<List<Vector3Int>> corridors = CreateCorridors(floorPositions, potentialRoomPositions);
 
-        HashSet<Vector2Int> roomPositions = CreateRooms(potentialRoomPositions);
+        HashSet<Vector3Int> roomPositions = CreateRooms(potentialRoomPositions);
 
-        List<Vector2Int> deadEnds = FindAllDeadEnds(floorPositions);
+        List<Vector3Int> deadEnds = FindAllDeadEnds(floorPositions);
 
         CreateRoomsAtDeadEnd(deadEnds, roomPositions);
 
@@ -35,45 +34,28 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkMapGenerator
         for (int i = 0; i < corridors.Count; i++)
         {
             corridors[i] = IncreaseCorridorSizeByOne(corridors[i]);
-            //corridors[i] = IncreaseCorridorBrush3by3(corridors[i]);
             floorPositions.UnionWith(corridors[i]);
         }
 
         tilemapVisualizer.PaintFloorTiles(floorPositions);
-        WallGenerator.CreateWalls(floorPositions, tilemapVisualizer);
+        // WallGenerator.CreateWalls(floorPositions, tilemapVisualizer);
     }
 
-    private List<Vector2Int> IncreaseCorridorBrush3by3(List<Vector2Int> corridor)
+    private List<Vector3Int> IncreaseCorridorSizeByOne(List<Vector3Int> corridor)
     {
-        List<Vector2Int> newCorridor = new List<Vector2Int>();
-        for (int i = 1; i < corridorCount; i++)
-        {
-            for (int x = -1; x < 2; x++)
-            {
-                for (int y = -1; y < 2; y++) 
-                {
-                    newCorridor.Add(corridor[i - 1] + new Vector2Int(x, y));
-                }
-            }
-        }
-        return newCorridor;
-    }
-
-    private List<Vector2Int> IncreaseCorridorSizeByOne(List<Vector2Int> corridor)
-    {
-        List<Vector2Int> newCorridor = new List<Vector2Int>();
-        Vector2Int previousDirection = Vector2Int.zero;
+        List<Vector3Int> newCorridor = new List<Vector3Int>();
+        Vector3Int previousDirection = Vector3Int.zero;
         for (int i = 1; i < corridor.Count; i++)
         {
-            Vector2Int directionFromCell = corridor[i] - corridor[i - 1];
-            if(previousDirection != Vector2Int.zero && directionFromCell != previousDirection) 
+            Vector3Int directionFromCell = corridor[i] - corridor[i - 1];
+            if (previousDirection != Vector3Int.zero && directionFromCell != previousDirection)
             {
-                // handle corner
+                // Handle corner
                 for (int x = -1; x < 2; x++)
                 {
-                    for (int y = -1; y < 2; y++) 
+                    for (int y = -1; y < 2; y++)
                     {
-                        newCorridor.Add(corridor[i - 1] + new Vector2Int(x, y));
+                        newCorridor.Add(corridor[i - 1] + new Vector3Int(x, y, 0)); // Adjust for Z-as-Y
                     }
                 }
                 previousDirection = directionFromCell;
@@ -81,7 +63,7 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkMapGenerator
             else
             {
                 // Add a single cell in the direction + 90 degrees
-                Vector2Int newCorridorTileOffset = GetDirection90From(directionFromCell);
+                Vector3Int newCorridorTileOffset = GetDirection90From(directionFromCell);
                 newCorridor.Add(corridor[i - 1]);
                 newCorridor.Add(corridor[i - 1] + newCorridorTileOffset);
             }
@@ -89,17 +71,17 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkMapGenerator
         return newCorridor;
     }
 
-    private Vector2Int GetDirection90From(Vector2Int direction)
+    private Vector3Int GetDirection90From(Vector3Int direction)
     {
-        if (direction == Vector2Int.up) return Vector2Int.right;
-        if (direction == Vector2Int.right) return Vector2Int.down;
-        if (direction == Vector2Int.down) return Vector2Int.left;
-        if (direction == Vector2Int.left) return Vector2Int.up;
+        if (direction == Vector3Int.up) return new Vector3Int(1, 0, -1); // Adjust for Z-as-Y
+        if (direction == Vector3Int.right) return new Vector3Int(0, -1, -1); // Adjust for Z-as-Y
+        if (direction == Vector3Int.down) return new Vector3Int(-1, 0, -1); // Adjust for Z-as-Y
+        if (direction == Vector3Int.left) return new Vector3Int(0, 1, -1); // Adjust for Z-as-Y
 
-        return Vector2Int.zero;
+        return Vector3Int.zero;
     }
 
-    private void CreateRoomsAtDeadEnd(List<Vector2Int> deadEnds, HashSet<Vector2Int> roomFloors)
+    private void CreateRoomsAtDeadEnd(List<Vector3Int> deadEnds, HashSet<Vector3Int> roomFloors)
     {
         foreach (var position in deadEnds)
         {
@@ -111,18 +93,18 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkMapGenerator
         }
     }
 
-    private List<Vector2Int> FindAllDeadEnds(HashSet<Vector2Int> floorPositions)
+    private List<Vector3Int> FindAllDeadEnds(HashSet<Vector3Int> floorPositions)
     {
-        List<Vector2Int> deadEnds = new List<Vector2Int>();
+        List<Vector3Int> deadEnds = new List<Vector3Int>();
         foreach (var position in floorPositions)
         {
             int neighborsCount = 0;
-            foreach (var direction in Direction2D.cardinalDirectionsList) 
+            foreach (var direction in Direction3D.cardinalDirectionsList) // Assuming you have Direction3D class
             {
                 if (floorPositions.Contains(position + direction))
                 {
                     neighborsCount++;
-                }      
+                }
             }
 
             if (neighborsCount == 1)
@@ -134,12 +116,12 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkMapGenerator
         return deadEnds;
     }
 
-    private HashSet<Vector2Int> CreateRooms(HashSet<Vector2Int> potentialRoomPositions)
+    private HashSet<Vector3Int> CreateRooms(HashSet<Vector3Int> potentialRoomPositions)
     {
-        HashSet<Vector2Int> roomPositions = new HashSet<Vector2Int>();
+        HashSet<Vector3Int> roomPositions = new HashSet<Vector3Int>();
         int roomToCreateCount = Mathf.RoundToInt(potentialRoomPositions.Count * roomPercent);
 
-        List<Vector2Int> roomsToCreate = potentialRoomPositions.OrderBy(x => Guid.NewGuid()).Take(roomToCreateCount).ToList();
+        List<Vector3Int> roomsToCreate = potentialRoomPositions.OrderBy(x => Guid.NewGuid()).Take(roomToCreateCount).ToList();
 
         foreach (var roomPosition in roomsToCreate)
         {
@@ -150,11 +132,11 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkMapGenerator
         return roomPositions;
     }
 
-    private List<List<Vector2Int>> CreateCorridors(HashSet<Vector2Int> floorPositions, HashSet<Vector2Int> potentialRoomPositions)
+    private List<List<Vector3Int>> CreateCorridors(HashSet<Vector3Int> floorPositions, HashSet<Vector3Int> potentialRoomPositions)
     {
         var currentPosition = startPosition;
         potentialRoomPositions.Add(currentPosition);
-        List<List<Vector2Int>> corridors = new List<List<Vector2Int>>();
+        List<List<Vector3Int>> corridors = new List<List<Vector3Int>>();
 
         for (int i = 0; i < corridorCount; i++)
         {

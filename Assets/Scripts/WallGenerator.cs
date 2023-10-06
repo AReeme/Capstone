@@ -1,24 +1,23 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class WallGenerator 
+public static class WallGenerator
 {
-    public static void CreateWalls(HashSet<Vector2Int> floorPositions, TilemapVisualizer tilemapVisualizer)
+    public static void CreateWalls(HashSet<Vector3Int> floorPositions, TilemapVisualizer tilemapVisualizer)
     {
-        var basicWallPositions = FindWallsInDirections(floorPositions, Direction2D.cardinalDirectionsList);
-        var cornerWallPositions = FindWallsInDirections(floorPositions, Direction2D.diagonalDirectionsList);
+        var basicWallPositions = FindWallsInDirections(floorPositions, Direction3D.cardinalDirectionsList);
+        var cornerWallPositions = FindWallsInDirections(floorPositions, Direction3D.diagonalDirectionsList);
         CreateBasicWall(tilemapVisualizer, basicWallPositions, floorPositions);
         CreateCornerWalls(tilemapVisualizer, cornerWallPositions, floorPositions);
     }
 
-    private static void CreateCornerWalls(TilemapVisualizer tilemapVisualizer, HashSet<Vector2Int> cornerWallPositions, HashSet<Vector2Int> floorPositions)
+    private static void CreateCornerWalls(TilemapVisualizer tilemapVisualizer, HashSet<Vector3Int> cornerWallPositions, HashSet<Vector3Int> floorPositions)
     {
         foreach (var position in cornerWallPositions)
         {
             string neighborsBinaryType = "";
-            foreach (var direction in Direction2D.eightDirectionsList)
+            foreach (var direction in Direction3D.cardinalDirectionsList)
             {
                 var neighborPosition = position + direction;
                 if (floorPositions.Contains(neighborPosition))
@@ -34,18 +33,19 @@ public static class WallGenerator
         }
     }
 
-    private static void CreateBasicWall(TilemapVisualizer tilemapVisualizer, HashSet<Vector2Int> basicWallPositions, HashSet<Vector2Int> floorPositions)
+    private static void CreateBasicWall(TilemapVisualizer tilemapVisualizer, HashSet<Vector3Int> basicWallPositions, HashSet<Vector3Int> floorPositions)
     {
         foreach (var position in basicWallPositions)
         {
             string neighborsBinaryType = "";
-            foreach (var direction in Direction2D.cardinalDirectionsList)
+            foreach (var direction in Direction3D.diagonalDirectionsList)
             {
                 var neighborPosition = position + direction;
-                if(floorPositions.Contains(neighborPosition)) 
+                if (floorPositions.Contains(neighborPosition))
                 {
                     neighborsBinaryType += "1";
-                }else
+                }
+                else
                 {
                     neighborsBinaryType += "0";
                 }
@@ -54,20 +54,19 @@ public static class WallGenerator
         }
     }
 
-    private static HashSet<Vector2Int> FindWallsInDirections(HashSet<Vector2Int> floorPositions, List<Vector2Int> directionList)
+    private static HashSet<Vector3Int> FindWallsInDirections(HashSet<Vector3Int> floorPositions, List<Vector3Int> directionList)
     {
-        HashSet<Vector2Int> wallPositions = new HashSet<Vector2Int>();
-        foreach (var position in floorPositions) 
+        HashSet<Vector3Int> wallPositions = new HashSet<Vector3Int>();
+        foreach (var position in floorPositions)
         {
             foreach (var direction in directionList)
             {
                 var neighborPosition = position + direction;
-                if (floorPositions.Contains(neighborPosition) == false)
+                if (!floorPositions.Contains(neighborPosition))
                 {
                     wallPositions.Add(neighborPosition);
                 }
             }
-
         }
         return wallPositions;
     }

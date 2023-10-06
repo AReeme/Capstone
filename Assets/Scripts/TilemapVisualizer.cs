@@ -1,22 +1,19 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using System;
 using UnityEngine.Tilemaps;
+using UnityEngine;
 
 public class TilemapVisualizer : MonoBehaviour
 {
-    [SerializeField]
-    private Tilemap floorTilemap, wallTilemap;
-    [SerializeField]
-    private TileBase floorTile, wallTop, wallSideRight, wallSideLeft, wallBottom, wallFull, wallInnerCornerDownLeft, wallInnerCornerDownRight, wallDiagonalCornerDownRight, wallDiagonalCornerDownLeft, wallDiagonalCornerUpRight, wallDiagonalCornerUpLeft;
+    [SerializeField] private Tilemap floorTilemap, wallTilemap;
+    [SerializeField] private TileBase floorTile, wallTop, wallSideRight, wallSideLeft, wallBottom, wallFull, wallInnerCornerDownLeft, wallInnerCornerDownRight, wallDiagonalCornerDownRight, wallDiagonalCornerDownLeft, wallDiagonalCornerUpRight, wallDiagonalCornerUpLeft;
 
-    public void PaintFloorTiles(IEnumerable<Vector2Int> floorPositions)
+    public void PaintFloorTiles(IEnumerable<Vector3Int> floorPositions)
     {
         PaintTiles(floorPositions, floorTilemap, floorTile);
     }
 
-    private void PaintTiles(IEnumerable<Vector2Int> positions, Tilemap tilemap, TileBase tile)
+    private void PaintTiles(IEnumerable<Vector3Int> positions, Tilemap tilemap, TileBase tile)
     {
         foreach (var position in positions)
         {
@@ -24,14 +21,53 @@ public class TilemapVisualizer : MonoBehaviour
         }
     }
 
-    internal void PaintSingleBasicWall(Vector2Int position, string binaryType)
+    private void PaintSingleTile(Tilemap tilemap, TileBase tile, Vector3Int position)
+    {
+        // Set the tile on the isometric tilemap
+        tilemap.SetTile(position, tile);
+    }
+
+    internal void PaintSingleBasicWall(Vector3Int position, string binaryType)
     {
         int typeAsInt = Convert.ToInt32(binaryType, 2);
         TileBase tile = null;
-        if (WallTypesHelper.wallTop.Contains(typeAsInt)) 
+
+        // Adjust the tile selection logic based on the isometric tileset
+        // Ensure that your WallTypesHelper and tile mappings are compatible with 3D coordinates
+        // ...
+
+        if (tile != null)
+        {
+            // Set the tile on the isometric tilemap
+            wallTilemap.SetTile(position, tile);
+        }
+    }
+
+    private Vector3Int ConvertToIsometricCoordinates(Vector2Int position)
+    {
+        // Convert Cartesian coordinates to isometric coordinates
+        int x = position.x - position.y;
+        int y = (position.x + position.y) / 2;
+        return new Vector3Int(x, y, 0);
+    }
+
+    public void Clear()
+    {
+        floorTilemap.ClearAllTiles();
+        wallTilemap.ClearAllTiles();
+    }
+
+    internal void PaintSingleCornerWall(Vector3Int position, string binaryType)
+    {
+        int typeAsInt = Convert.ToInt32(binaryType, 2);
+        TileBase tile = null;
+
+        // Adjust the tile selection logic based on the isometric tileset
+        if (WallTypesHelper.wallTop.Contains(typeAsInt))
         {
             tile = wallTop;
-        } else if (WallTypesHelper.wallSideRight.Contains(typeAsInt))
+        }
+        else if (WallTypesHelper.wallSideRight.Contains(typeAsInt))
         {
             tile = wallSideRight;
         }
@@ -50,62 +86,9 @@ public class TilemapVisualizer : MonoBehaviour
 
         if (tile != null)
         {
-            PaintSingleTile(wallTilemap, tile, position);
-        }
-    }
-
-    private void PaintSingleTile(Tilemap tilemap, TileBase tile, Vector2Int position)
-    {
-        var tilePosition = tilemap.WorldToCell((Vector3Int)position);
-        tilemap.SetTile(tilePosition, tile);
-    }
-
-    public void Clear()
-    {
-        floorTilemap.ClearAllTiles();
-        wallTilemap.ClearAllTiles();
-    }
-
-    internal void PaintSingleCornerWall(Vector2Int position, string binaryType)
-    {
-        int typeAsInt = Convert.ToInt32(binaryType, 2);
-        TileBase tile = null;
-
-        if (WallTypesHelper.wallInnerCornerDownLeft.Contains(typeAsInt)) 
-        {
-            tile = wallInnerCornerDownLeft;
-        } else if (WallTypesHelper.wallInnerCornerDownRight.Contains(typeAsInt))
-        {
-            tile = wallInnerCornerDownRight;
-        }
-        else if (WallTypesHelper.wallDiagonalCornerDownLeft.Contains(typeAsInt))
-        {
-            tile = wallDiagonalCornerDownLeft;
-        }
-        else if (WallTypesHelper.wallDiagonalCornerDownRight.Contains(typeAsInt))
-        {
-            tile = wallDiagonalCornerDownRight;
-        }
-        else if (WallTypesHelper.wallDiagonalCornerUpRight.Contains(typeAsInt))
-        {
-            tile = wallDiagonalCornerUpRight;
-        }
-        else if (WallTypesHelper.wallDiagonalCornerUpLeft.Contains(typeAsInt))
-        {
-            tile = wallDiagonalCornerUpLeft;
-        }
-        else if (WallTypesHelper.wallFullEightDirections.Contains(typeAsInt))
-        {
-            tile = wallFull;
-        }
-        else if (WallTypesHelper.wallBottmEightDirections.Contains(typeAsInt))
-        {
-            tile = wallBottom;
-        }
-
-        if (tile != null)
-        {
-            PaintSingleTile(wallTilemap, tile, position);
+            // Adjust the position to match isometric coordinates
+            Vector3Int isoPosition = ConvertToIsometricCoordinates(new Vector2Int(position.x, position.y));
+            wallTilemap.SetTile(isoPosition, tile);
         }
     }
 }
