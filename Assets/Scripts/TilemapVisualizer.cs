@@ -32,10 +32,6 @@ public class TilemapVisualizer : MonoBehaviour
         int typeAsInt = Convert.ToInt32(binaryType, 2);
         TileBase tile = null;
 
-        // Adjust the tile selection logic based on the isometric tileset
-        // Ensure that your WallTypesHelper and tile mappings are compatible with 3D coordinates
-        // ...
-
         if (tile != null)
         {
             // Set the tile on the isometric tilemap
@@ -90,5 +86,11 @@ public class TilemapVisualizer : MonoBehaviour
             Vector3Int isoPosition = ConvertToIsometricCoordinates(new Vector2Int(position.x, position.y));
             wallTilemap.SetTile(isoPosition, tile);
         }
+    }
+
+    public bool IsFloorTile(Vector3Int position, HashSet<Vector3Int> floorPositions)
+    {
+        // In an isometric grid with Z-as-Y, check if the position exists in the floorPositions set.
+        return floorPositions.Contains(position);
     }
 }

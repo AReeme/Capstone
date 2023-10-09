@@ -31,10 +31,10 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkMapGenerator
 
         floorPositions.UnionWith(roomPositions);
 
-        for (int i = 0; i < corridors.Count; i++)
+        foreach (var corridor in corridors)
         {
-            corridors[i] = IncreaseCorridorSizeByOne(corridors[i]);
-            floorPositions.UnionWith(corridors[i]);
+            corridor.AddRange(IncreaseCorridorSizeByOne(corridor));
+            floorPositions.UnionWith(corridor);
         }
 
         tilemapVisualizer.PaintFloorTiles(floorPositions);
@@ -45,6 +45,7 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkMapGenerator
     {
         List<Vector3Int> newCorridor = new List<Vector3Int>();
         Vector3Int previousDirection = Vector3Int.zero;
+
         for (int i = 1; i < corridor.Count; i++)
         {
             Vector3Int directionFromCell = corridor[i] - corridor[i - 1];
@@ -62,10 +63,15 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkMapGenerator
             }
             else
             {
-                // Add a single cell in the direction + 90 degrees
+                // Add cells on both sides of the original path
                 Vector3Int newCorridorTileOffset = GetDirection90From(directionFromCell);
                 newCorridor.Add(corridor[i - 1]);
                 newCorridor.Add(corridor[i - 1] + newCorridorTileOffset);
+                newCorridor.Add(corridor[i - 1] - newCorridorTileOffset);
+
+                // Additional cells for increased width
+                newCorridor.Add(corridor[i - 1] + 2 * newCorridorTileOffset);
+                newCorridor.Add(corridor[i - 1] - 2 * newCorridorTileOffset);
             }
         }
         return newCorridor;
@@ -99,7 +105,7 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkMapGenerator
         foreach (var position in floorPositions)
         {
             int neighborsCount = 0;
-            foreach (var direction in Direction3D.cardinalDirectionsList) // Assuming you have Direction3D class
+            foreach (var direction in Direction3D.cardinalDirectionsList)
             {
                 if (floorPositions.Contains(position + direction))
                 {
@@ -111,7 +117,6 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkMapGenerator
             {
                 deadEnds.Add(position);
             }
-
         }
         return deadEnds;
     }
@@ -141,10 +146,23 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkMapGenerator
         for (int i = 0; i < corridorCount; i++)
         {
             var corridor = ProceduralGenerationAlgorithms.RandomWalkCorridor(currentPosition, corridorLength);
+
+            foreach (var cell in corridor)
+            {
+                // Add cells to make the corridor three times as wide
+                for (int x = -1; x <= 1; x++)
+                {
+                    for (int y = -1; y <= 1; y++)
+                    {
+                        Vector3Int widenedCell = cell + new Vector3Int(x, y, 0);
+                        floorPositions.Add(widenedCell);
+                    }
+                }
+            }
+
             corridors.Add(corridor);
             currentPosition = corridor[corridor.Count - 1];
             potentialRoomPositions.Add(currentPosition);
-            floorPositions.UnionWith(corridor);
         }
         return corridors;
     }

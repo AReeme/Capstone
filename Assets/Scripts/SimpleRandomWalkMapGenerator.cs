@@ -12,7 +12,7 @@ public class SimpleRandomWalkMapGenerator : AbstractWorldGenerator
         HashSet<Vector3Int> floorPositions = RunRandomWalk(randomWalkParameters, startPosition);
         tilemapVisualizer.Clear();
         tilemapVisualizer.PaintFloorTiles(floorPositions);
-        //WallGenerator.CreateWalls(floorPositions, tilemapVisualizer);
+        WallGenerator.CreateWalls(floorPositions, tilemapVisualizer);
     }
 
     protected HashSet<Vector3Int> RunRandomWalk(SimpleRandomWalkSO parameters, Vector3Int position)

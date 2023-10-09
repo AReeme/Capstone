@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,19 +15,7 @@ public static class WallGenerator
     {
         foreach (var position in cornerWallPositions)
         {
-            string neighborsBinaryType = "";
-            foreach (var direction in Direction3D.cardinalDirectionsList)
-            {
-                var neighborPosition = position + direction;
-                if (floorPositions.Contains(neighborPosition))
-                {
-                    neighborsBinaryType += "1";
-                }
-                else
-                {
-                    neighborsBinaryType += "0";
-                }
-            }
+            string neighborsBinaryType = GetNeighborsBinaryType(position, floorPositions, Direction3D.cardinalDirectionsList);
             tilemapVisualizer.PaintSingleCornerWall(position, neighborsBinaryType);
         }
     }
@@ -37,21 +24,27 @@ public static class WallGenerator
     {
         foreach (var position in basicWallPositions)
         {
-            string neighborsBinaryType = "";
-            foreach (var direction in Direction3D.diagonalDirectionsList)
-            {
-                var neighborPosition = position + direction;
-                if (floorPositions.Contains(neighborPosition))
-                {
-                    neighborsBinaryType += "1";
-                }
-                else
-                {
-                    neighborsBinaryType += "0";
-                }
-            }
+            string neighborsBinaryType = GetNeighborsBinaryType(position, floorPositions, Direction3D.diagonalDirectionsList);
             tilemapVisualizer.PaintSingleBasicWall(position, neighborsBinaryType);
         }
+    }
+
+    private static string GetNeighborsBinaryType(Vector3Int position, HashSet<Vector3Int> floorPositions, List<Vector3Int> directionList)
+    {
+        string neighborsBinaryType = "";
+        foreach (var direction in directionList)
+        {
+            var neighborPosition = position + direction;
+            if (floorPositions.Contains(neighborPosition))
+            {
+                neighborsBinaryType += "1";
+            }
+            else
+            {
+                neighborsBinaryType += "0";
+            }
+        }
+        return neighborsBinaryType;
     }
 
     private static HashSet<Vector3Int> FindWallsInDirections(HashSet<Vector3Int> floorPositions, List<Vector3Int> directionList)

@@ -11,7 +11,7 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkMapGenerator
     private int dungeonWidth = 20, dungeonHeight = 20;
     [SerializeField]
     [Range(0, 10)]
-    private int offset = 1; // Added offset variable
+    private int offset = 1;
     [SerializeField]
     private bool randomWalkRooms = false;
 
@@ -47,7 +47,7 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkMapGenerator
         floor.UnionWith(corridors);
 
         tilemapVisualizer.PaintFloorTiles(floor);
-        // WallGenerator.CreateWalls(floor, tilemapVisualizer);
+        WallGenerator.CreateWalls(floor, tilemapVisualizer);
     }
 
     private HashSet<Vector3Int> CreateRoomsRandomly(List<BoundsInt> roomsList)
