@@ -29,26 +29,11 @@ public class PlayerMovement : MonoBehaviour
             animator.SetFloat("Last_Vertical",
                               Input.GetAxisRaw("Vertical"));
         }
-
-        if (Input.GetKeyDown(KeyCode.Space)) animator.SetBool("isAttack", true);
     }
 
     void FixedUpdate()
     {
-        if (animator.GetBool("isAttack") == true)
-        {
-            rb.velocity = Vector2.zero;
-        }
-        else
-        {
-            rb.MovePosition(rb.position + movement * moveSpeed *
-                            Time.fixedDeltaTime);
-        }
+       rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
 
-    void StopAttack()
-    {
-        if (animator.GetBool("isAttack"))
-            animator.SetBool("isAttack", false);
-    }
 }

@@ -7,69 +7,33 @@ public class EnemyController : MonoBehaviour
     public Transform player;
     [SerializeField]
     [Range(1, 15)]
-    private int moveSpeed = 5;
-    private int attackRange = 1;
-    [SerializeField]
-    [Range(5, 20)]
-    public int damage = 5;
+    private float moveSpeed = 5;
     public Rigidbody2D rb;
     public Animator animator;
-    Vector2 movement;
 
-    public bool isAttacking = false;
+    private void Awake()
+    {
+        player = GameObject.Find("Player").transform;
+    }
 
     void Update()
     {
-        // Calculate the movement direction
-        float horizontalInput = player.position.x - transform.position.x;
-        float verticalInput = player.position.y - transform.position.y;
-        movement = new Vector2(horizontalInput, verticalInput).normalized;
+        if (player != null)
+        {
+            // Calculate the direction to move towards the player
+            Vector3 directionToPlayer = (player.position - transform.position).normalized;
 
-        // Set animator parameters for animation
-        animator.SetFloat("Horizontal", movement.x);
-        animator.SetFloat("Vertical", movement.y);
-        animator.SetFloat("Speed", movement.magnitude);
+            // Calculate the movement direction
+            float horizontalInput = directionToPlayer.x;
+            float verticalInput = directionToPlayer.y;
 
-        //if (!isAttacking)
-        //{
-        //    if (IsPlayerInAttackRange())
-        //    {
-        //        isAttacking = true;
-        //        AttackPlayer();
-        //    }
-        //    else
-        //    {
-                rb.velocity = movement.normalized * moveSpeed; 
-        //    }
-        //}
-        //else
-        //{
-            
-        //}
+            // Set animator parameters for animation
+            animator.SetFloat("Horizontal", horizontalInput);
+            animator.SetFloat("Vertical", verticalInput);
+            animator.SetFloat("Speed", directionToPlayer.magnitude);
+
+            // Move the enemy towards the player
+            rb.velocity = directionToPlayer * moveSpeed;
+        }
     }
-
-    //bool IsPlayerInAttackRange()
-    //{
-    //    return Vector3.Distance(transform.position, player.position) <= attackRange;
-    //}
-
-    //void AttackPlayer()
-    //{
-    //    if (IsPlayerInAttackRange())
-    //    {
-    //        movement = Vector2.zero;
-    //        animator.SetBool("isAttack", true);
-    //        Health playerHealth = player.GetComponent<Health>();
-    //        if (playerHealth != null)
-    //        {
-    //            playerHealth.TakeDamage(damage);
-    //        }
-    //    }
-    //}
-
-    //void StopAttack()
-    //{
-    //    if (animator.GetBool("isAttack"))
-    //        animator.SetBool("isAttack", false);
-    //}
 }

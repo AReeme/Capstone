@@ -5,32 +5,68 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     [SerializeField]
-    [Range(0, 100)]
-    private int maxHealth;
-    private int currentHealth;
+    public int health = 100;
 
-    void Start()
-    {
-        currentHealth = maxHealth;
-    }
+    private int MAX_HEATH = 100;
     
     void Update()
     {
-        
+        //if (Input.GetKeyDown(KeyCode.E))
+        //{
+        //    Damage(10);
+        //}
+
+        //if (Input.GetKeyDown(KeyCode.R))
+        //{
+        //    Heal(10);
+        //}
     }
 
-    public void TakeDamage(int damage)
+    private IEnumerator VisualIndicator(Color color)
     {
-        currentHealth -= damage;
+        GetComponent<SpriteRenderer>().color = color;
+        yield return new WaitForSeconds(0.15f);
+        GetComponent<SpriteRenderer>().color = Color.white;
+    }
 
-        if (currentHealth <= 0)
+    public void Damage(int amount)
+    {
+
+        if (amount < 0)
         {
-            gameObject.SetActive(false);
+            throw new System.ArgumentOutOfRangeException("Cannot have negative damage.");
+        }
+
+        this.health -= amount;
+        StartCoroutine(VisualIndicator(Color.red));
+
+        if (health <= 0)
+        {
+            Die();
         }
     }
 
-    void Heal(int healAmount)
+    public void Heal(int amount)
     {
-        currentHealth = Mathf.Min(currentHealth + healAmount, maxHealth);
+        if (amount < 0)
+        {
+            throw new System.ArgumentOutOfRangeException("Cannot have negative healing.");
+        }
+
+        bool wouldBeOverMaxHealth = health + amount > MAX_HEATH;
+        StartCoroutine(VisualIndicator(Color.green));
+
+        if (wouldBeOverMaxHealth)
+        {
+            this.health = MAX_HEATH;
+        } else
+        {
+            this.health += amount;
+        }
+    }
+
+    private void Die()
+    {
+        Destroy(gameObject);
     }
 }
