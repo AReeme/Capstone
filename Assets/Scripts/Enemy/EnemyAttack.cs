@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyAttack : MonoBehaviour
 {
-    private GameObject attackArea = default;
+    private GameObject attackArea;
     private bool attacking = false;
     private float timeToAttack = 0.25f;
     private float timer = 0f;
@@ -24,6 +24,9 @@ public class EnemyAttack : MonoBehaviour
 
         if (distanceToPlayer <= attackRange && !attacking)
         {
+            // Calculate the direction to the player
+            Vector3 directionToPlayer = (playerPrefab.position - transform.position).normalized;
+
             Attack();
         }
 

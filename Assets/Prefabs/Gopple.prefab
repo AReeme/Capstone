@@ -73,6 +73,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d69ed6dedebeeb4ba07931a89fa619e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  knockbackForce: 10
 --- !u!1 &8426371244770745976
 GameObject:
   m_ObjectHideFlags: 0
@@ -230,7 +231,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.5, y: 1.5}
   m_EdgeRadius: 0
 --- !u!114 &8426371244770745972
 MonoBehaviour:
@@ -260,7 +261,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b51ed342b1a68844ebd40d0257ef26d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 25
+  health: 10
 --- !u!114 &520196640047410803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,5 +275,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 8426371244770745977}
-  attackRange: 3
+  attackRange: 1
   playerPrefab: {fileID: 1883191349059987495, guid: 8a3566bda6bc60a4490605f6d3e5ad75, type: 3}

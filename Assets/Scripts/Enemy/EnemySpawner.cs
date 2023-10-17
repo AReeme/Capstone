@@ -32,7 +32,7 @@ public class EnemySpawner : MonoBehaviour
 
         if (enemy == gopplePrefab)
         {
-            goppleTimer -= 0.25f;
+            goppleTimer -= 0.05f;
             interval = goppleTimer;
             if (interval < 1)
             {
@@ -42,7 +42,7 @@ public class EnemySpawner : MonoBehaviour
         }
         else if (enemy == gooplePrefab)
         {
-            goopleTimer -= 0.25f;
+            goopleTimer -= 0.05f;
             interval = goopleTimer;
             if (interval < 1)
             {
@@ -52,7 +52,7 @@ public class EnemySpawner : MonoBehaviour
         }
         else if (enemy == hammerHeadPrefab)
         {
-            hammerHeadTimer -= 0.25f;
+            hammerHeadTimer -= 0.05f;
             interval = hammerHeadTimer;
             if (interval < 1)
             {

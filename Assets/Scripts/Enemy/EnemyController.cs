@@ -10,6 +10,8 @@ public class EnemyController : MonoBehaviour
     private float moveSpeed = 5;
     public Rigidbody2D rb;
     public Animator animator;
+    private float lastHorizontal = 0f;
+    private float lastVertical = 0f;
 
     private void Awake()
     {
@@ -34,6 +36,14 @@ public class EnemyController : MonoBehaviour
 
             // Move the enemy towards the player
             rb.velocity = directionToPlayer * moveSpeed;
+
+            // Update the last horizontal and vertical directions
+            lastHorizontal = directionToPlayer.x;
+            lastVertical = directionToPlayer.y;
+
+            // Pass the last horizontal and vertical directions to the animator
+            animator.SetFloat("Last_Horizontal", lastHorizontal);
+            animator.SetFloat("Last_Vertical", lastVertical);
         }
     }
 }

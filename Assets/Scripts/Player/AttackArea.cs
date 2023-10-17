@@ -5,6 +5,8 @@ using UnityEngine;
 public class AttackArea : MonoBehaviour
 {
     private int damage = 3;
+    [SerializeField]
+    private float knockbackForce = 10.0f;
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
@@ -12,6 +14,14 @@ public class AttackArea : MonoBehaviour
         {
             Health health = collider.GetComponent<Health>();
             health.Damage(damage);
+
+            Vector2 direction = (collider.transform.position - transform.position).normalized;
+
+            Rigidbody2D targetRigidbody = collider.GetComponent<Rigidbody2D>();
+            if (targetRigidbody != null)
+            {
+                targetRigidbody.AddForce(-direction * knockbackForce, ForceMode2D.Impulse);
+            }
         }
     }
 }
