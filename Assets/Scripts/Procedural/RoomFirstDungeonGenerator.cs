@@ -46,8 +46,34 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkMapGenerator
         HashSet<Vector3Int> corridors = ConnectRooms(roomCenters);
         floor.UnionWith(corridors);
 
+        // Create walls around the edges of rooms
+        HashSet<Vector3Int> walls = CreateWallsAroundRooms(roomsList);
+        floor.UnionWith(walls);
+
         tilemapVisualizer.PaintFloorTiles(floor);
         WallGenerator.CreateWalls(floor, tilemapVisualizer);
+    }
+
+    private HashSet<Vector3Int> CreateWallsAroundRooms(List<BoundsInt> roomsList)
+    {
+        HashSet<Vector3Int> walls = new HashSet<Vector3Int>();
+
+        foreach (var room in roomsList)
+        {
+            for (int x = room.x; x < room.x + room.size.x; x++)
+            {
+                for (int y = room.y; y < room.y + room.size.y; y++)
+                {
+                    if (x == room.x || x == room.x + room.size.x - 1 || y == room.y || y == room.y + room.size.y - 1)
+                    {
+                        // These are the perimeter tiles of the room; add them as walls.
+                        walls.Add(new Vector3Int(x, y, 0));
+                    }
+                }
+            }
+        }
+
+        return walls;
     }
 
     private HashSet<Vector3Int> CreateRoomsRandomly(List<BoundsInt> roomsList)

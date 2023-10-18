@@ -18,6 +18,7 @@ public class AttackArea : MonoBehaviour
             Vector2 direction = (collider.transform.position - transform.position).normalized;
 
             Rigidbody2D targetRigidbody = collider.GetComponent<Rigidbody2D>();
+            Debug.Log(targetRigidbody.ToString());
             if (targetRigidbody != null)
             {
                 targetRigidbody.AddForce(-direction * knockbackForce, ForceMode2D.Impulse);

@@ -61,7 +61,7 @@ public class EnemySpawner : MonoBehaviour
             hammerHeadCount++;
         }
 
-        GameObject newEnemy = Instantiate(enemy, new Vector3(Random.Range(-6.0f, 6.0f), Random.Range(-3.5f, 3.5f), -3), Quaternion.identity);
+        GameObject newEnemy = Instantiate(enemy, new Vector3(Random.Range(-81.0f, 89.0f), Random.Range(-7.5f, 75.5f), -3), Quaternion.identity);
         StartCoroutine(SpawnEnemy(interval, enemy, enemyCount));
     }
 }

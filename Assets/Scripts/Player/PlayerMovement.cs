@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -8,6 +9,14 @@ public class PlayerMovement : MonoBehaviour
     public Rigidbody2D rb;
     public Animator animator;
     Vector2 movement;
+    public Tilemap tilemap; // Reference to the Tilemap containing wall tiles.
+
+    private TileInteraction tileInteraction;
+
+    private void Start()
+    {
+        tileInteraction = GetComponent<TileInteraction>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -20,20 +29,23 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("Speed", movement.sqrMagnitude);
 
         if (Input.GetAxisRaw("Horizontal") == 1 ||
-           Input.GetAxisRaw("Horizontal") == -1 ||
-           Input.GetAxisRaw("Vertical") == 1 ||
-           Input.GetAxisRaw("Vertical") == -1)
+            Input.GetAxisRaw("Horizontal") == -1 ||
+            Input.GetAxisRaw("Vertical") == 1 ||
+            Input.GetAxisRaw("Vertical") == -1)
         {
-            animator.SetFloat("Last_Horizontal",
-                              Input.GetAxisRaw("Horizontal"));
-            animator.SetFloat("Last_Vertical",
-                              Input.GetAxisRaw("Vertical"));
+            animator.SetFloat("Last_Horizontal", Input.GetAxisRaw("Horizontal"));
+            animator.SetFloat("Last_Vertical", Input.GetAxisRaw("Vertical"));
         }
     }
 
     void FixedUpdate()
     {
-       rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
-    }
+        Vector2 newPosition = rb.position + movement * moveSpeed * Time.fixedDeltaTime;
 
+        // Check if the next position is not a wall tile using the TileInteraction script.
+        if (!tileInteraction.IsNextPositionWall(newPosition))
+        {
+            rb.MovePosition(newPosition);
+        }
+    }
 }
