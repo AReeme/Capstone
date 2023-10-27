@@ -6,7 +6,7 @@ public class Health : MonoBehaviour
 {
     [SerializeField]
     public int health = 100;
-
+    public HealthManager healthManager;
     private int MAX_HEATH = 100;
     
     void Update()
@@ -29,6 +29,12 @@ public class Health : MonoBehaviour
         GetComponent<SpriteRenderer>().color = Color.white;
     }
 
+    public void SetHealth(int maxHealth, int health)
+    {
+        this.MAX_HEATH = maxHealth;
+        this.health = health;
+    }
+
     public void Damage(int amount)
     {
 
@@ -37,7 +43,7 @@ public class Health : MonoBehaviour
             throw new System.ArgumentOutOfRangeException("Cannot have negative damage.");
         }
 
-        this.health -= amount;
+        healthManager.TakeDamage(amount);
         StartCoroutine(VisualIndicator(Color.red));
 
         if (health <= 0)

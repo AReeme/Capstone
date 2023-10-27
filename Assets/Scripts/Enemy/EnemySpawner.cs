@@ -11,6 +11,8 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     private GameObject hammerHeadPrefab;
 
+    public Transform spawnPointsParent; // Reference to the parent GameObject containing spawn points.
+
     private int goppleCount = 0;
     private int goopleCount = 0;
     private int hammerHeadCount = 0;
@@ -21,6 +23,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void Start()
     {
+        // Start spawning the different types of enemies
         StartCoroutine(SpawnEnemy(goppleTimer, gopplePrefab, goppleCount));
         StartCoroutine(SpawnEnemy(goopleTimer, gooplePrefab, goopleCount));
         StartCoroutine(SpawnEnemy(hammerHeadTimer, hammerHeadPrefab, hammerHeadCount));
@@ -30,38 +33,25 @@ public class EnemySpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(interval);
 
+        interval -= 0.25f;
+        interval = Mathf.Max(interval, 0.25f);
+
         if (enemy == gopplePrefab)
         {
-            goppleTimer -= 0.05f;
-            interval = goppleTimer;
-            if (interval < 1)
-            {
-                interval = 1;
-            }
             goppleCount++;
         }
         else if (enemy == gooplePrefab)
         {
-            goopleTimer -= 0.05f;
-            interval = goopleTimer;
-            if (interval < 1)
-            {
-                interval = 1;
-            }
             goopleCount++;
         }
         else if (enemy == hammerHeadPrefab)
         {
-            hammerHeadTimer -= 0.05f;
-            interval = hammerHeadTimer;
-            if (interval < 1)
-            {
-                interval = 1;
-            }
             hammerHeadCount++;
         }
 
-        GameObject newEnemy = Instantiate(enemy, new Vector3(Random.Range(-81.0f, 89.0f), Random.Range(-7.5f, 75.5f), -3), Quaternion.identity);
+        Transform[] spawnPoints = spawnPointsParent.GetComponentsInChildren<Transform>();
+        Transform randomSpawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+        GameObject newEnemy = Instantiate(enemy, randomSpawnPoint.position, Quaternion.identity);
         StartCoroutine(SpawnEnemy(interval, enemy, enemyCount));
     }
 }
