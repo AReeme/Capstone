@@ -9,13 +9,27 @@ public class PlayerMovement : MonoBehaviour
     public Rigidbody2D rb;
     public Animator animator;
     Vector2 movement;
-    public Tilemap tilemap; // Reference to the Tilemap containing wall tiles.
+    public Tilemap tilemap;
+    public StopwatchTimer stopwatchTimer;
 
     private TileInteraction tileInteraction;
 
     private void Start()
     {
         tileInteraction = GetComponent<TileInteraction>();
+
+        // Find the StopwatchTimer script in the scene (or on the same GameObject).
+        stopwatchTimer = FindObjectOfType<StopwatchTimer>();
+
+        // Start the timer automatically when the game starts.
+        if (stopwatchTimer != null)
+        {
+            stopwatchTimer.StartTimer();
+        }
+        else
+        {
+            Debug.LogError("StopwatchTimer script not found in the scene.");
+        }
     }
 
     // Update is called once per frame
