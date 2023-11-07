@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class AttackArea : MonoBehaviour
 {
-    private int damage = 3;
+    public float damage = 3;
     [SerializeField]
     private Rigidbody2D rb2d;
     [SerializeField]
@@ -59,5 +59,10 @@ public class AttackArea : MonoBehaviour
         StopAllCoroutines();
         OnBegin?.Invoke();
         ApplyKnockback(sender);
+    }
+
+    public void IncreaseDamage(int level)
+    {
+        damage += (damage * 0.01f) * ((100 - level) * 0.5f);
     }
 }

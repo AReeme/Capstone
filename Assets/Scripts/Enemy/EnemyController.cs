@@ -1,17 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class EnemyController : MonoBehaviour
 {
-    public Transform player;
+    private Transform player;
+    private LevelSystem playerLevel;
+
     [SerializeField]
     [Range(1, 15)]
     private float moveSpeed = 5;
-    public Rigidbody2D rb;
-    public Animator animator;
     [SerializeField]
     private int damage = 5;
+
+    public Rigidbody2D rb;
+    public Animator animator;
+
+    public int enemyLevel;
+    public float enemyXP;
+    public float XPMultiplier;
 
     private Vector3 wanderDirection;
     private float wanderInterval = 2.0f;
@@ -29,8 +37,16 @@ public class EnemyController : MonoBehaviour
     private void Awake()
     {
         player = GameObject.FindWithTag("Player").transform;
+        playerLevel = player.GetComponent<LevelSystem>();
+        enemyLevel = Random.Range(1, playerLevel.level + 2);
+        damage *= enemyLevel;
+
+        // Have all enemies spawned in the wander state
         currentState = EnemyState.Wander;
         SetRandomWanderDirection();
+
+        // Enemy is a Higher Level than the Player
+        enemyXP = Mathf.Round(enemyLevel * 6 * XPMultiplier);
     }
 
     void Update()

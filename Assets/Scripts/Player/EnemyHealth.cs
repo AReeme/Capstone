@@ -4,10 +4,20 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
+    private Transform player;
+    private LevelSystem playerLevel;
+    public EnemyController eController;
+
     [SerializeField]
-    public int health = 100;
-    private int MAX_HEATH = 100;
-    
+    public float health = 100;
+    private float MAX_HEATH = 100;
+
+    public void Start()
+    {
+        player = GameObject.FindWithTag("Player").transform;
+        playerLevel = player.GetComponent<LevelSystem>();
+    }
+
     void Update()
     {
         //if (Input.GetKeyDown(KeyCode.E))
@@ -34,7 +44,7 @@ public class EnemyHealth : MonoBehaviour
         this.health = health;
     }
 
-    public void Damage(int amount)
+    public void Damage(float amount)
     {
 
         if (amount < 0)
@@ -72,6 +82,8 @@ public class EnemyHealth : MonoBehaviour
 
     private void Die()
     {
+        playerLevel.GainExperienceScalable(eController.enemyXP, eController.enemyLevel);
+        GetComponent<LootBag>().InstantiateLoot(transform.position);
         Destroy(gameObject);
     }
 }

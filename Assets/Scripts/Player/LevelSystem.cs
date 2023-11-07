@@ -6,6 +6,8 @@ using TMPro;
 
 public class LevelSystem : MonoBehaviour
 {
+    public AttackArea attackArea;
+
     public int level;
     public float currentXP;
     public float requiredXP;
@@ -98,6 +100,7 @@ public class LevelSystem : MonoBehaviour
         backXPBar.fillAmount = 0;
         currentXP = Mathf.RoundToInt(currentXP - requiredXP);
         GetComponent<Health>().IncreaseHealth(level);
+        attackArea.GetComponent<AttackArea>().IncreaseDamage(level);
         requiredXP = CalculateRequiredXP();
         levelText.text = "Level " + level;
     }
@@ -109,6 +112,6 @@ public class LevelSystem : MonoBehaviour
         {
             solveForRequiredXP += (int)Mathf.Floor(levelCycle + additionMultiplier * Mathf.Pow(powerMultiplier, levelCycle / divisionMultiplier));
         }
-        return solveForRequiredXP / 2;
+        return solveForRequiredXP / 4;
     }
 }

@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 3536960343062900999}
   - component: {fileID: 537341449308396888}
   - component: {fileID: 3536960343062900998}
-  - component: {fileID: 8681327970025447463}
   - component: {fileID: 5446972506033773952}
   - component: {fileID: 2820854281948760642}
+  - component: {fileID: 7109260175480532012}
   m_Layer: 0
   m_Name: HammerHead
   m_TagString: Enemy
@@ -172,26 +172,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e37902799bba08247ab8f55f90ad97de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1883191349059987495, guid: 8a3566bda6bc60a4490605f6d3e5ad75, type: 3}
   moveSpeed: 1
+  damage: 20
   rb: {fileID: 3536960343062900999}
   animator: {fileID: 3536960343062901001}
-  damage: 20
---- !u!114 &8681327970025447463
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3536960343062901002}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a252741c8e9dc82438e98da736f0580e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 3536960343062901001}
-  attackRange: 1
-  playerPrefab: {fileID: 1883191349059987495, guid: 8a3566bda6bc60a4490605f6d3e5ad75, type: 3}
+  enemyLevel: 1
+  enemyXP: 20
+  XPMultiplier: 1
 --- !u!114 &5446972506033773952
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,6 +191,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 030552b730bae87479a948d0878d0c8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eController: {fileID: 3536960343062900998}
   health: 20
 --- !u!70 &2820854281948760642
 CapsuleCollider2D:
@@ -221,6 +209,23 @@ CapsuleCollider2D:
   m_Offset: {x: -0.005377134, y: 0.0215079}
   m_Size: {x: 0.91383934, y: 1.1611824}
   m_Direction: 0
+--- !u!114 &7109260175480532012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3536960343062901002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f103014632e7273468a87ecefe22a9f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  droppedItemPrefab: {fileID: 489164901149176933, guid: 89bbde54d7cd34e4caa696fdc5e1259c, type: 3}
+  lootList:
+  - {fileID: 11400000, guid: e1d375a995612af4981caff2f7f6cb50, type: 2}
+  - {fileID: 11400000, guid: 72fdac37541d79b4abe2ec64d34503aa, type: 2}
+  - {fileID: 11400000, guid: 8d3c60411cf78b44aaa971aeff2c1743, type: 2}
 --- !u!1 &3644011415533910074
 GameObject:
   m_ObjectHideFlags: 0
@@ -294,6 +299,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d69ed6dedebeeb4ba07931a89fa619e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 3
   rb2d: {fileID: 0}
   strength: 16
   delay: 0.15

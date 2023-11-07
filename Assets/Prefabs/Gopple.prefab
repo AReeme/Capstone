@@ -73,6 +73,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d69ed6dedebeeb4ba07931a89fa619e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 3
   rb2d: {fileID: 0}
   strength: 16
   delay: 0.15
@@ -96,9 +97,9 @@ GameObject:
   - component: {fileID: 8426371244770745973}
   - component: {fileID: 2967723844484422904}
   - component: {fileID: 8426371244770745972}
-  - component: {fileID: 520196640047410803}
   - component: {fileID: 2087518255543660996}
   - component: {fileID: 7132537146601549811}
+  - component: {fileID: 1274624534771191156}
   m_Layer: 0
   m_Name: Gopple
   m_TagString: Enemy
@@ -254,26 +255,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e37902799bba08247ab8f55f90ad97de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1883191349059987495, guid: 8a3566bda6bc60a4490605f6d3e5ad75, type: 3}
   moveSpeed: 3.5
+  damage: 3
   rb: {fileID: 8426371244770745973}
   animator: {fileID: 8426371244770745977}
-  damage: 3
---- !u!114 &520196640047410803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8426371244770745976}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a252741c8e9dc82438e98da736f0580e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 8426371244770745977}
-  attackRange: 1
-  playerPrefab: {fileID: 1883191349059987495, guid: 8a3566bda6bc60a4490605f6d3e5ad75, type: 3}
+  enemyLevel: 1
+  enemyXP: 20
+  XPMultiplier: 1
 --- !u!114 &2087518255543660996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -286,6 +274,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 030552b730bae87479a948d0878d0c8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eController: {fileID: 8426371244770745972}
   health: 10
 --- !u!70 &7132537146601549811
 CapsuleCollider2D:
@@ -303,3 +292,20 @@ CapsuleCollider2D:
   m_Offset: {x: -0.005377134, y: 0.0215079}
   m_Size: {x: 0.91383934, y: 1.1611824}
   m_Direction: 0
+--- !u!114 &1274624534771191156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8426371244770745976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f103014632e7273468a87ecefe22a9f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  droppedItemPrefab: {fileID: 489164901149176933, guid: 89bbde54d7cd34e4caa696fdc5e1259c, type: 3}
+  lootList:
+  - {fileID: 11400000, guid: e1d375a995612af4981caff2f7f6cb50, type: 2}
+  - {fileID: 11400000, guid: 72fdac37541d79b4abe2ec64d34503aa, type: 2}
+  - {fileID: 11400000, guid: 8d3c60411cf78b44aaa971aeff2c1743, type: 2}

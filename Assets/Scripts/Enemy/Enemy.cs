@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour
 
     public int enemyLevel;
     public float enemyXp;
-    public float XpMultiplier;
+    public float XpMultiplier = 1;
     public int numberOfHits = 3;
     public TextMeshProUGUI text;
     public GameObject explosion;

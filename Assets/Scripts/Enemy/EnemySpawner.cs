@@ -17,9 +17,9 @@ public class EnemySpawner : MonoBehaviour
     private int goopleCount = 0;
     private int hammerHeadCount = 0;
 
-    private float goppleTimer = 3.5f;
-    private float goopleTimer = 5.5f;
-    private float hammerHeadTimer = 10.0f;
+    private float goppleTimer = 6.5f;
+    private float goopleTimer = 8.5f;
+    private float hammerHeadTimer = 20.0f;
 
     private void Start()
     {
