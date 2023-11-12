@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
 public class RoomFirstDungeonGenerator : SimpleRandomWalkMapGenerator
@@ -15,14 +15,31 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkMapGenerator
     [SerializeField]
     private bool randomWalkRooms = false;
 
+    // New parameters for prop spawning
+    [SerializeField]
+    private float propSpawnProbability = 0.5f;
+    [SerializeField]
+    private int minPropsPerRoom = 1;
+    [SerializeField]
+    private int maxPropsPerRoom = 3;
+    [SerializeField]
+    private Sprite[] propSprites;
+
+    // Variable to store the list of rooms
+    private List<BoundsInt> roomsList;
+
+    // Reference to the Tilemap
+    public Tilemap tilemap;
+
     protected override void RunProceduralGeneration()
     {
         CreateRooms();
+        SpawnProps();
     }
 
     private void CreateRooms()
     {
-        var roomsList = ProceduralGenerationAlgorithms.BinarySpacePartitioning(new BoundsInt(Vector3Int.zero, new Vector3Int(dungeonWidth, dungeonHeight, 1)), minRoomWidth, minRoomHeight);
+        roomsList = ProceduralGenerationAlgorithms.BinarySpacePartitioning(new BoundsInt(Vector3Int.zero, new Vector3Int(dungeonWidth, dungeonHeight, 1)), minRoomWidth, minRoomHeight);
 
         HashSet<Vector3Int> floor = new HashSet<Vector3Int>();
 
@@ -38,7 +55,6 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkMapGenerator
         List<Vector3Int> roomCenters = new List<Vector3Int>();
         foreach (var room in roomsList)
         {
-            // Convert the room center to Vector3Int
             Vector3Int roomCenter = new Vector3Int((int)room.center.x, (int)room.center.y, 0);
             roomCenters.Add(roomCenter);
         }
@@ -46,7 +62,6 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkMapGenerator
         HashSet<Vector3Int> corridors = ConnectRooms(roomCenters);
         floor.UnionWith(corridors);
 
-        // Create walls around the edges of rooms
         HashSet<Vector3Int> walls = CreateWallsAroundRooms(roomsList);
         floor.UnionWith(walls);
 
@@ -66,7 +81,6 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkMapGenerator
                 {
                     if (x == room.x || x == room.x + room.size.x - 1 || y == room.y || y == room.y + room.size.y - 1)
                     {
-                        // These are the perimeter tiles of the room; add them as walls.
                         walls.Add(new Vector3Int(x, y, 0));
                     }
                 }
@@ -86,7 +100,6 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkMapGenerator
             {
                 for (int y = roomBounds.y; y < roomBounds.y + roomBounds.size.y; y++)
                 {
-                    // Convert the position to Vector3Int
                     Vector3Int position = new Vector3Int(x, y, 0);
                     floor.Add(position);
                 }
@@ -169,12 +182,47 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkMapGenerator
             {
                 for (int y = room.y + offset; y < room.y + room.size.y - offset; y++)
                 {
-                    // Convert the position to Vector3Int
                     Vector3Int position = new Vector3Int(x, y, 0);
                     floor.Add(position);
                 }
             }
         }
         return floor;
+    }
+
+    private void SpawnProps()
+    {
+        foreach (var room in roomsList)
+        {
+            if (Random.Range(0f, 1f) < propSpawnProbability)
+            {
+                int numberOfProps = Random.Range(minPropsPerRoom, maxPropsPerRoom);
+
+                for (int i = 0; i < numberOfProps; i++)
+                {
+                    Vector3Int propPosition = new Vector3Int(
+                        Random.Range(room.x, room.x + room.size.x),
+                        Random.Range(room.y, room.y + room.size.y),
+                        0
+                    );
+
+                    Vector3Int tilePosition = tilemap.WorldToCell(propPosition);
+
+                    if (tilemap.cellBounds.Contains(tilePosition))
+                    {
+                        Sprite propSprite = propSprites[Random.Range(0, propSprites.Length)];
+
+                        GameObject propObject = new GameObject("Prop");
+                        propObject.transform.position = tilemap.GetCellCenterWorld(tilePosition);
+
+                        SpriteRenderer spriteRenderer = propObject.AddComponent<SpriteRenderer>();
+                        spriteRenderer.sprite = propSprite;
+
+                        spriteRenderer.sortingLayerName = "Props";
+                        spriteRenderer.sortingOrder = 1;
+                    }
+                }
+            }
+        }
     }
 }

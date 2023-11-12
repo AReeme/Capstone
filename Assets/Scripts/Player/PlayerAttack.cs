@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
+    public bool hasSword;
     private GameObject attackArea = default;
     private bool attacking = false;
     private float timeToAttack = 0.25f;
@@ -18,6 +19,8 @@ public class PlayerAttack : MonoBehaviour
 
     void Update()
     {
+        hasSword = animator.GetBool("HasSword");
+
         if (Input.GetMouseButtonDown(0))
         {
             Attack();
@@ -32,7 +35,16 @@ public class PlayerAttack : MonoBehaviour
                 timer = 0;
                 attacking = false;
                 attackArea.SetActive(attacking);
-                animator.SetBool("isAttack", false);
+                if (hasSword)
+                {
+                    animator.SetBool("isSwordAttack", false);
+                    animator.SetBool("isAttack", false);
+                }
+                else
+                {
+                    animator.SetBool("isAttack", false);
+                    animator.SetBool("isSwordAttack", false);
+                }
             }
         }
     }
@@ -41,6 +53,13 @@ public class PlayerAttack : MonoBehaviour
     {
         attacking = true;
         attackArea.SetActive(attacking);
-        animator.SetBool("isAttack", true);
+        if (hasSword) 
+        {
+            animator.SetBool("isSwordAttack", true);
+        }
+        else
+        {
+            animator.SetBool("isAttack", true);
+        }
     }
 }

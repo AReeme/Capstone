@@ -5,6 +5,7 @@ using UnityEngine.Tilemaps;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public bool hasSword;
     public float moveSpeed = 5f;
     public Rigidbody2D rb;
     public Animator animator;
@@ -38,6 +39,8 @@ public class PlayerMovement : MonoBehaviour
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
+        hasSword = animator.GetBool("HasSword");
+
         animator.SetFloat("Horizontal", movement.x);
         animator.SetFloat("Vertical", movement.y);
         animator.SetFloat("Speed", movement.sqrMagnitude);
@@ -49,6 +52,11 @@ public class PlayerMovement : MonoBehaviour
         {
             animator.SetFloat("Last_Horizontal", Input.GetAxisRaw("Horizontal"));
             animator.SetFloat("Last_Vertical", Input.GetAxisRaw("Vertical"));
+            if(hasSword)
+            {
+                animator.SetFloat("Last_Sword_Horizontal", Input.GetAxisRaw("Horizontal"));
+                animator.SetFloat("Last_Sword_Vertical", Input.GetAxisRaw("Vertical"));
+            }
         }
     }
 

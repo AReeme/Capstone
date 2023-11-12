@@ -38,10 +38,9 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkMapGenerator
         }
 
         tilemapVisualizer.PaintFloorTiles(floorPositions);
-        // WallGenerator.CreateWalls(floorPositions, tilemapVisualizer);
     }
 
-    private List<Vector3Int> IncreaseCorridorSizeByOne(List<Vector3Int> corridor)
+    public List<Vector3Int> IncreaseCorridorSizeByOne(List<Vector3Int> corridor)
     {
         List<Vector3Int> newCorridor = new List<Vector3Int>();
         Vector3Int previousDirection = Vector3Int.zero;
@@ -49,14 +48,15 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkMapGenerator
         for (int i = 1; i < corridor.Count; i++)
         {
             Vector3Int directionFromCell = corridor[i] - corridor[i - 1];
+
             if (previousDirection != Vector3Int.zero && directionFromCell != previousDirection)
             {
                 // Handle corner
-                for (int x = -1; x < 2; x++)
+                for (int j = -2; j <= 2; j++)
                 {
-                    for (int y = -1; y < 2; y++)
+                    for (int k = -2; k <= 2; k++)
                     {
-                        newCorridor.Add(corridor[i - 1] + new Vector3Int(x, y, 0)); // Adjust for Z-as-Y
+                        newCorridor.Add(corridor[i - 1] + new Vector3Int(j, k, 0)); // Adjust for Z-as-Y
                     }
                 }
                 previousDirection = directionFromCell;
@@ -74,6 +74,7 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkMapGenerator
                 newCorridor.Add(corridor[i - 1] - 2 * newCorridorTileOffset);
             }
         }
+
         return newCorridor;
     }
 
@@ -149,10 +150,10 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkMapGenerator
 
             foreach (var cell in corridor)
             {
-                // Add cells to make the corridor three times as wide
-                for (int x = -1; x <= 1; x++)
+                // Add cells to make the corridor 4 times as wide
+                for (int x = -2; x <= 2; x++)
                 {
-                    for (int y = -1; y <= 1; y++)
+                    for (int y = -2; y <= 2; y++)
                     {
                         Vector3Int widenedCell = cell + new Vector3Int(x, y, 0);
                         floorPositions.Add(widenedCell);

@@ -5,18 +5,32 @@ using UnityEngine.Events;
 
 public class AttackArea : MonoBehaviour
 {
+    public bool hasSword;
     public float damage = 3;
     [SerializeField]
     private Rigidbody2D rb2d;
+    public Animator animator;
     [SerializeField]
     private float strength = 16, delay = 0.15f;
     public UnityEvent OnBegin, OnDone;
+
+
+    public void Start()
+    {
+        hasSword = animator.GetBool("HasSword");
+
+        if (hasSword)
+        {
+            WeaponDamage(10);
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.GetComponent<EnemyHealth>() != null)
         {
             EnemyHealth health = collider.GetComponent<EnemyHealth>();
+            
             health.Damage(damage);
 
             // Apply knockback to the enemy
@@ -64,5 +78,10 @@ public class AttackArea : MonoBehaviour
     public void IncreaseDamage(int level)
     {
         damage += (damage * 0.01f) * ((100 - level) * 0.5f);
+    }
+
+    public void WeaponDamage(int weaponDamage)
+    {
+        damage += weaponDamage;
     }
 }
