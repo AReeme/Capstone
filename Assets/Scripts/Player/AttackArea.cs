@@ -6,10 +6,13 @@ using UnityEngine.Events;
 public class AttackArea : MonoBehaviour
 {
     public bool hasSword;
+    public bool hasAxe;
+    public bool hasBow;
     public float damage = 3;
     [SerializeField]
     private Rigidbody2D rb2d;
     public Animator animator;
+    public Arrow arrowScript;
     [SerializeField]
     private float strength = 16, delay = 0.15f;
     public UnityEvent OnBegin, OnDone;
@@ -18,10 +21,23 @@ public class AttackArea : MonoBehaviour
     public void Start()
     {
         hasSword = animator.GetBool("HasSword");
+        hasAxe = animator.GetBool("HasAxe");
+        hasBow = animator.GetBool("HasBow");
 
         if (hasSword)
         {
             WeaponDamage(10);
+        }
+
+        if (hasAxe)
+        {
+            WeaponDamage(20);
+        }
+
+        if (hasBow)
+        {
+            WeaponDamage(5);
+            arrowScript.SetArrowDamage(damage);
         }
     }
 

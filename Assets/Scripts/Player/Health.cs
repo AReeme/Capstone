@@ -6,17 +6,26 @@ using TMPro;
 
 public class Health : MonoBehaviour
 {
+    [Header("Health Settings")]
     public float health;
     private float lerpTimer;
     public float MAX_HEATH = 100f;
+
+    [Header("HealthBar Animations")]
     public float chipSpeed = 2f; 
     public HealthManager healthManager;
     public Image frontHealthBar;
     public Image backHealthBar;
     public TextMeshProUGUI healthText;
 
+    [Header("Health Abilites")]
+    public bool hasRegenAbility;
+    float healCooldown = 10f;
+    bool canHeal = true;
+
     private void Start()
     {
+        canHeal = true;
         health = MAX_HEATH;
     }
 
@@ -28,9 +37,14 @@ public class Health : MonoBehaviour
         {
             Damage(Random.Range(5, 10));
         }
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (Input.GetKeyDown(KeyCode.Z))
         {
             Heal(Random.Range(5, 10));
+        }
+
+        if (hasRegenAbility && canHeal)
+        {
+            StartCoroutine(Regen());
         }
     }
 
@@ -121,5 +135,13 @@ public class Health : MonoBehaviour
     {
         MAX_HEATH += (health * 0.01f) * ((100 - level) * 0.1f);
         health = MAX_HEATH;
+    }
+
+    private IEnumerator Regen()
+    {
+        Heal(10);
+        canHeal = false;
+        yield return new WaitForSeconds(healCooldown);
+        canHeal = true;
     }
 }

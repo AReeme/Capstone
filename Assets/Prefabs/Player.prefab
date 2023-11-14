@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &375972009507813115
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1095190802997537493}
+  m_Layer: 0
+  m_Name: Hand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1095190802997537493
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375972009507813115}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1883191349059987495}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1883191349059987490
 GameObject:
   m_ObjectHideFlags: 0
@@ -40,6 +71,7 @@ Transform:
   - {fileID: 7571945600032023105}
   - {fileID: 1626924841845428566}
   - {fileID: 2146858900287157920}
+  - {fileID: 1095190802997537493}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -84,7 +116,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1720552978, guid: 00f099ba1185464489d84294e749143c, type: 3}
+  m_Sprite: {fileID: 157649887, guid: 2901d6586d7e426469751679c35d2454, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -181,6 +213,8 @@ MonoBehaviour:
   healthManager: {fileID: 0}
   frontHealthBar: {fileID: 0}
   backHealthBar: {fileID: 0}
+  healthText: {fileID: 0}
+  hasRegenAbility: 0
 --- !u!114 &6343826892356901723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,11 +227,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feadaa7dca94397438416a958b215ad8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackArea: {fileID: 0}
   level: 0
   currentXP: 0
   requiredXP: 0
   frontXPBar: {fileID: 0}
   backXPBar: {fileID: 0}
+  levelText: {fileID: 0}
+  xpText: {fileID: 0}
+  additionMultiplier: 300
+  powerMultiplier: 2
+  divisionMultiplier: 7
 --- !u!114 &1883191349059987494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,11 +250,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7032390e0f3c8c8498134b2b3177a6b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasSword: 0
+  hasAxe: 0
+  hasBow: 0
+  hasDashAbility: 0
   moveSpeed: 7.5
   rb: {fileID: 1883191349059987493}
   animator: {fileID: 1883191349059987489}
   tilemap: {fileID: 0}
-  stopwatchTimer: {fileID: 0}
+  dashSpeed: 10
+  dashDuration: 1
+  dashCooldown: 1
 --- !u!114 &3646169021876233861
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,7 +273,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8191a65b76c9064b8f9994c064909d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasSword: 0
+  hasAxe: 0
+  hasBow: 0
+  arrowScript: {fileID: 0}
   animator: {fileID: 1883191349059987489}
+  hand: {fileID: 1095190802997537493}
+  arrowPrefab: {fileID: 3289087504912833589, guid: c0b0f792430f8c648b584ca32444e3d3, type: 3}
+  arrowSpeed: 10
 --- !u!114 &3080864206213654591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -364,7 +417,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d69ed6dedebeeb4ba07931a89fa619e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasSword: 0
+  hasAxe: 0
+  hasBow: 0
+  damage: 3
   rb2d: {fileID: 1883191349059987493}
+  animator: {fileID: 0}
+  arrowScript: {fileID: 0}
   strength: 16
   delay: 0.15
   OnBegin:

@@ -81,7 +81,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1323132223, guid: 1ed1ecc1bfebef746bf47b41bebb1d89, type: 3}
+  m_Sprite: {fileID: 264320800, guid: 624098884db68d84ab4142a6596e3a57, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -299,8 +299,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d69ed6dedebeeb4ba07931a89fa619e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasSword: 0
+  hasAxe: 0
+  hasBow: 0
   damage: 3
   rb2d: {fileID: 0}
+  animator: {fileID: 0}
+  arrowScript: {fileID: 0}
   strength: 16
   delay: 0.15
   OnBegin:

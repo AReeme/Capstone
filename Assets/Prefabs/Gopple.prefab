@@ -73,8 +73,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d69ed6dedebeeb4ba07931a89fa619e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasSword: 0
+  hasAxe: 0
+  hasBow: 0
   damage: 3
   rb2d: {fileID: 0}
+  animator: {fileID: 0}
+  arrowScript: {fileID: 0}
   strength: 16
   delay: 0.15
   OnBegin:
@@ -164,7 +169,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 140119479, guid: c0b3176a364aed940895524d38fa1441, type: 3}
+  m_Sprite: {fileID: 2143122287, guid: f873cc6fdfd0f2e48ab1acce8068efcd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
