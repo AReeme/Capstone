@@ -18,19 +18,6 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         tileInteraction = GetComponent<TileInteraction>();
-
-        // Find the StopwatchTimer script in the scene (or on the same GameObject).
-        stopwatchTimer = FindObjectOfType<StopwatchTimer>();
-
-        // Start the timer automatically when the game starts.
-        if (stopwatchTimer != null)
-        {
-            stopwatchTimer.StartTimer();
-        }
-        else
-        {
-            Debug.LogError("StopwatchTimer script not found in the scene.");
-        }
     }
 
     // Update is called once per frame
