@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class Health : MonoBehaviour
 {
+    public Rigidbody2D rb;
+    public Animator anim;
+    
     [Header("Health Settings")]
     public float health;
     private float lerpTimer;
@@ -27,6 +31,10 @@ public class Health : MonoBehaviour
     {
         canHeal = true;
         health = MAX_HEATH;
+        rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+
+        rb.bodyType = RigidbodyType2D.Dynamic;
     }
 
     void Update()
@@ -128,7 +136,10 @@ public class Health : MonoBehaviour
 
     private void Die()
     {
-        Destroy(gameObject);
+        rb.bodyType = RigidbodyType2D.Static;
+        anim.SetTrigger("Death");
+        Invoke("SwitchScene", 1.1f);
+        
     }
 
     public void IncreaseHealth(int level)
@@ -143,5 +154,12 @@ public class Health : MonoBehaviour
         canHeal = false;
         yield return new WaitForSeconds(healCooldown);
         canHeal = true;
+    }
+
+    private void SwitchScene()
+    {
+        SceneManager.LoadScene("Game Over");
+        Camera.main.transform.parent = null;
+        Destroy(gameObject);
     }
 }
