@@ -24,6 +24,8 @@ public class Health : MonoBehaviour
 
     [Header("Health Abilites")]
     public bool hasRegenAbility;
+    public bool hasHealthUpAbility;
+    private bool healthAbilityActivated;
     float healCooldown = 10f;
     bool canHeal = true;
 
@@ -53,6 +55,19 @@ public class Health : MonoBehaviour
         if (hasRegenAbility && canHeal)
         {
             StartCoroutine(Regen());
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (hasHealthUpAbility && !healthAbilityActivated)
+        {
+            ActivateHealthUpAbility();
+        }
+
+        if (!hasHealthUpAbility && healthAbilityActivated)
+        {
+            DeactivateHealthUpAbility();
         }
     }
 
@@ -161,5 +176,25 @@ public class Health : MonoBehaviour
         SceneManager.LoadScene("Game Over");
         Camera.main.transform.parent = null;
         Destroy(gameObject);
+    }
+
+    private void ActivateHealthUpAbility()
+    {
+        if (!healthAbilityActivated)
+        {
+            health += 50;
+            MAX_HEATH = health;
+            healthAbilityActivated = true;
+        }
+    }
+
+    private void DeactivateHealthUpAbility()
+    {
+        if (healthAbilityActivated)
+        {
+            health -= 50;
+            MAX_HEATH = health;
+            healthAbilityActivated = false;
+        }
     }
 }

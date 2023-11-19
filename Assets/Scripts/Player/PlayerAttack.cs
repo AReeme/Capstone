@@ -1,8 +1,5 @@
-using Mono.Cecil.Cil;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class PlayerAttack : MonoBehaviour
 {
@@ -25,9 +22,21 @@ public class PlayerAttack : MonoBehaviour
     bool canShoot = true;
     bool isShooting;
 
+    [Header("Weapon Durability")]
+    public int swordDurability = 15;
+    public int axeDurability = 5;
+    public int bowDurability = 10;
+
+    private int currentSwordDurability;
+    private int currentAxeDurability;
+    private int currentBowDurability;
+
     void Start()
     {
         attackArea = transform.GetChild(0).gameObject;
+        currentSwordDurability = swordDurability;
+        currentAxeDurability = axeDurability;
+        currentBowDurability = bowDurability;
     }
 
     void Update()
@@ -45,7 +54,7 @@ public class PlayerAttack : MonoBehaviour
         {
             timer += Time.deltaTime;
 
-            if(timer >= timeToAttack)
+            if (timer >= timeToAttack)
             {
                 if (hasSword)
                 {
@@ -54,7 +63,8 @@ public class PlayerAttack : MonoBehaviour
                     attackArea.SetActive(attacking);
                     animator.SetBool("isSwordAttack", false);
                     animator.SetBool("isAttack", false);
-                } else if (hasAxe)
+                }
+                else if (hasAxe)
                 {
                     timer = 0;
                     attacking = false;
@@ -62,13 +72,14 @@ public class PlayerAttack : MonoBehaviour
                     animator.SetBool("isAxeAttack", false);
                     animator.SetBool("isAttack", false);
                 }
-                else if (hasBow) 
+                else if (hasBow)
                 {
                     timer = 0;
                     attacking = false;
                     animator.SetBool("isBowAttack", false);
                     animator.SetBool("isAttack", false);
-                } else
+                }
+                else
                 {
                     timer = 0;
                     attacking = false;
@@ -81,24 +92,56 @@ public class PlayerAttack : MonoBehaviour
 
     private void Attack()
     {
-        if (hasSword) 
+        if (hasSword && currentSwordDurability > 0)
         {
-            attacking = true;
-            attackArea.SetActive(attacking);
-            animator.SetBool("isSwordAttack", true);
+            // Sword attack logic
+            Debug.Log("Sword Durability: " + currentSwordDurability);
+
+            if (currentSwordDurability == 0)
+            {
+                SwitchToRegularAttack();
+            }
+            else
+            {
+                attacking = true;
+                attackArea.SetActive(attacking);
+                animator.SetBool("isSwordAttack", true);
+            }
         }
-        else if (hasAxe)
+        else if (hasAxe && currentAxeDurability > 0)
         {
-            attacking = true;
-            attackArea.SetActive(attacking);
-            animator.SetBool("isAxeAttack", true);
-        } else if (hasBow && canShoot)
+            // Axe attack logic
+            Debug.Log("Axe Durability: " + currentAxeDurability);
+
+            if (currentAxeDurability == 0)
+            {
+                SwitchToRegularAttack();
+            }
+            else
+            {
+                attacking = true;
+                attackArea.SetActive(attacking);
+                animator.SetBool("isAxeAttack", true);
+            }
+        }
+        else if (hasBow && canShoot && currentBowDurability > 0)
         {
+            // Bow attack logic
             StartCoroutine(ShootCooldown());
-            animator.SetBool("isBowAttack", true);
+            Debug.Log("Bow Durability: " + currentBowDurability);
+
+            if (currentBowDurability == 0)
+            {
+                SwitchToRegularAttack();
+            }
+            else
+            {
+                animator.SetBool("isBowAttack", true);
+            }
         }
         else
         {
+            // Regular attack logic
             attacking = true;
             attackArea.SetActive(attacking);
             animator.SetBool("isAttack", true);
@@ -156,5 +199,67 @@ public class PlayerAttack : MonoBehaviour
         isShooting = false;
         yield return new WaitForSeconds(0.5f);
         canShoot = true;
+    }
+
+    public void DeductSwordDurability()
+    {
+        currentSwordDurability--;
+
+        // Add logic for handling zero durability and switching to regular attack
+        if (currentSwordDurability == 0)
+        {
+            SwitchToRegularAttack();
+        }
+    }
+
+    public void DeductAxeDurability()
+    {
+        currentAxeDurability--;
+
+        // Add logic for handling zero durability and switching to regular attack
+        if (currentAxeDurability == 0)
+        {
+            SwitchToRegularAttack();
+        }
+    }
+
+    public void DeductBowDurability()
+    {
+        currentBowDurability--;
+
+        // Add logic for handling zero durability and switching to regular attack
+        if (currentBowDurability == 0)
+        {
+            SwitchToRegularAttack();
+        }
+    }
+
+    private void SwitchToRegularAttack()
+    {
+        // Switch to regular attack logic
+        Debug.Log("Switching to regular attack");
+
+        // Reset durability for the current weapon
+        if (hasSword)
+        {
+            currentSwordDurability = swordDurability;
+            animator.SetBool("HasSword", false);
+            animator.SetBool("isSwordAttack", false);
+        }
+        else if (hasAxe)
+        {
+            currentAxeDurability = axeDurability;
+            animator.SetBool("HasAxe", false);
+            animator.SetBool("isAxeAttack", false);
+        }
+        else if (hasBow)
+        {
+            currentBowDurability = bowDurability;
+            animator.SetBool("HasBow", false);
+            animator.SetBool("isBowAttack", false);
+        }
+
+        // Add any additional logic to handle the switch to regular attack
+        animator.SetBool("isAttack", false);
     }
 }

@@ -60,19 +60,10 @@ public class LootBag : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            GameObject lootGameObject = Instantiate(droppedItemPrefab, transform.position, Quaternion.identity);
-            BoxCollider2D prefabCollider = droppedItemPrefab.GetComponent<BoxCollider2D>();
-            BoxCollider2D lootCollider = lootGameObject.GetComponent<BoxCollider2D>();
+            Debug.Log("Collision with player detected");
 
-            if (prefabCollider != null && lootCollider != null)
-            {
-                lootCollider.size = prefabCollider.size;
-                lootCollider.offset = prefabCollider.offset;
-            }
-
-            player.SetBool("HasSword", true);
-            lootGameObject.SetActive(false);
-            Destroy(gameObject);
+            // Call InstantiateLoot and pass the position of the current LootBag
+            InstantiateLoot(transform.position);
         }
     }
 }

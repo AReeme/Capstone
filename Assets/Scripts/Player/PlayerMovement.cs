@@ -10,6 +10,9 @@ public class PlayerMovement : MonoBehaviour
     public bool hasAxe;
     public bool hasBow;
     public bool hasDashAbility;
+    private bool dashAbilityActivated = false;
+    public bool hasSpeedAbility;
+    private bool speedAbilityActivated = false;
 
     [Header("Character Settings")]
     public float moveSpeed = 5f;
@@ -27,11 +30,13 @@ public class PlayerMovement : MonoBehaviour
     bool isDashing;
     bool canDash = true;
 
+    private PlayerAttack playerAttack;
 
     private void Start()
     {
         canDash = true;
         tileInteraction = GetComponent<TileInteraction>();
+        playerAttack = GetComponent<PlayerAttack>();
     }
 
     // Update is called once per frame
@@ -45,9 +50,9 @@ public class PlayerMovement : MonoBehaviour
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
-        hasSword = animator.GetBool("HasSword");
-        hasAxe = animator.GetBool("HasAxe");
-        hasBow = animator.GetBool("HasBow");
+        hasSword = playerAttack.hasSword;
+        hasAxe = playerAttack.hasAxe;
+        hasBow = playerAttack.hasBow;
 
         animator.SetFloat("Horizontal", movement.x);
         animator.SetFloat("Vertical", movement.y);
@@ -92,6 +97,26 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
+        if (hasSpeedAbility && !speedAbilityActivated)
+        {
+            ActivateSpeedAbility();
+        }
+
+        if (!hasSpeedAbility && speedAbilityActivated)
+        {
+            DeactivateSpeedAbility();
+        }
+
+        if (hasDashAbility && !dashAbilityActivated)
+        {
+            ActivateDashAbility();
+        }
+
+        if (!hasDashAbility && dashAbilityActivated)
+        {
+            DeactivateDashAbility();
+        }
+
         Vector2 newPosition = rb.position + movement * moveSpeed * Time.fixedDeltaTime;
 
         // Check if the next position is not a wall tile using the TileInteraction script.
@@ -111,5 +136,29 @@ public class PlayerMovement : MonoBehaviour
 
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
+    }
+
+    private void ActivateSpeedAbility()
+    {
+        moveSpeed += 5;
+        speedAbilityActivated = true;
+    }
+
+    private void DeactivateSpeedAbility()
+    {
+        moveSpeed -= 5;
+        speedAbilityActivated = false;
+    }
+
+    private void ActivateDashAbility()
+    {
+        hasDashAbility = true;
+        dashAbilityActivated = true;
+    }
+
+    private void DeactivateDashAbility()
+    {
+        hasDashAbility = false;
+        dashAbilityActivated = false;
     }
 }

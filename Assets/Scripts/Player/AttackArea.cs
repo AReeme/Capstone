@@ -17,12 +17,19 @@ public class AttackArea : MonoBehaviour
     private float strength = 16, delay = 0.15f;
     public UnityEvent OnBegin, OnDone;
 
+    [Header("Damage Abilities")]
+    public bool hasDamageUpAbility;
+    private bool damageUpAbilityActivated = false;
+    private PlayerAttack playerAttack;
 
     public void Start()
     {
         hasSword = animator.GetBool("HasSword");
         hasAxe = animator.GetBool("HasAxe");
         hasBow = animator.GetBool("HasBow");
+
+        // Find and store a reference to PlayerAttack script
+        playerAttack = GetComponentInParent<PlayerAttack>();
 
         if (hasSword)
         {
@@ -41,16 +48,42 @@ public class AttackArea : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        if (hasDamageUpAbility && !damageUpAbilityActivated)
+        {
+            ActivateDamageUpAbility();
+        }
+
+        if (!hasDamageUpAbility && damageUpAbilityActivated)
+        {
+            DeactivateDamageUpAbility();
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.GetComponent<EnemyHealth>() != null)
         {
             EnemyHealth health = collider.GetComponent<EnemyHealth>();
-            
             health.Damage(damage);
 
             // Apply knockback to the enemy
             ApplyKnockback(collider.gameObject);
+
+            // Deduct durability when hitting an enemy
+            if (hasSword)
+            {
+                playerAttack.DeductSwordDurability();
+            }
+            else if (hasAxe)
+            {
+                playerAttack.DeductAxeDurability();
+            }
+            else if (hasBow)
+            {
+                playerAttack.DeductBowDurability();
+            }
         }
     }
 
@@ -75,7 +108,6 @@ public class AttackArea : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
-        // Check if the enemyRigidbody is still valid before accessing it
         if (enemyRigidbody != null)
         {
             enemyRigidbody.velocity = Vector2.zero;
@@ -99,5 +131,19 @@ public class AttackArea : MonoBehaviour
     public void WeaponDamage(int weaponDamage)
     {
         damage += weaponDamage;
+    }
+
+    private void ActivateDamageUpAbility()
+    {
+        hasDamageUpAbility = true;
+        damageUpAbilityActivated = true;
+        damage += 5;
+    }
+
+    private void DeactivateDamageUpAbility()
+    {
+        hasDamageUpAbility = false;
+        damageUpAbilityActivated = false;
+        damage -= 5;
     }
 }

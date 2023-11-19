@@ -7,9 +7,13 @@ public class GameOverTextEffect : MonoBehaviour
 {
     public float letterDelay = 0.1f;
     private TextMeshProUGUI gameOverText;
+    [SerializeField] private GameObject startGameButton;
+    [SerializeField] private GameObject quitGameButton;
 
     void Start()
     {
+        startGameButton.SetActive(false);
+        quitGameButton.SetActive(false);
         gameOverText = GetComponent<TextMeshProUGUI>();
         StartCoroutine(ShowText());
     }
@@ -25,6 +29,7 @@ public class GameOverTextEffect : MonoBehaviour
             yield return new WaitForSeconds(letterDelay);
         }
 
-
+        startGameButton.SetActive(true);
+        quitGameButton.SetActive(true);
     }
 }

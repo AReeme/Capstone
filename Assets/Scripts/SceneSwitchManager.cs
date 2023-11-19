@@ -32,4 +32,9 @@ public class SceneSwitchManager : MonoBehaviour
     {
         SceneManager.LoadScene("Title Screen");
     }
+
+    public void SwitchToFirstLevel()
+    {
+        SceneManager.LoadScene("Game Level 1");
+    }
 }
