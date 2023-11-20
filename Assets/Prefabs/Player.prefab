@@ -455,6 +455,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2146858900287157920}
   - component: {fileID: 4930864512938325423}
+  - component: {fileID: 8921931857282686572}
   m_Layer: 0
   m_Name: EnemySpawner
   m_TagString: Untagged
@@ -493,6 +494,54 @@ MonoBehaviour:
   gooplePrefab: {fileID: 6705254181530455609, guid: 2216f1a80be0b994c94cbaa9bde60e0a, type: 3}
   hammerHeadPrefab: {fileID: 3536960343062901002, guid: 37efef181d3e4f74f83b0b6e1437d787, type: 3}
   spawnPointsParent: {fileID: 0}
+--- !u!114 &8921931857282686572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2073116711826394010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae41f31a58c62af479e4d3b86ecb9fe7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _worldTime: {fileID: 0}
+  _schedule:
+  - Hour: 18
+    Minute: 0
+    _action:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: EnemySpawner, Assembly-CSharp
+          m_MethodName: HalveSpawnerTimes
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - Hour: 5
+    Minute: 0
+    _action:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: EnemySpawner, Assembly-CSharp
+          m_MethodName: DoubleSpawnerTimes
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &2858681498380191620
 GameObject:
   m_ObjectHideFlags: 0
