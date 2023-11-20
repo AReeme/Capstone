@@ -7,6 +7,7 @@ using TMPro;
 public class LevelSystem : MonoBehaviour
 {
     public AttackArea attackArea;
+    public AbilityMenu abilityMenu;
 
     public int level;
     public float currentXP;
@@ -43,7 +44,7 @@ public class LevelSystem : MonoBehaviour
         UpdateXPUI();
         if(Input.GetKeyDown(KeyCode.Equals))
         {
-            GainExperienceFlatRate(20);
+            GainExperienceFlatRate(120);
         }
 
         if (currentXP > requiredXP)
@@ -103,6 +104,11 @@ public class LevelSystem : MonoBehaviour
         attackArea.GetComponent<AttackArea>().IncreaseDamage(level);
         requiredXP = CalculateRequiredXP();
         levelText.text = "Level " + level;
+
+        if (level % 5 == 0)
+        {
+            abilityMenu.ShowAbilityMenu();
+        }
     }
 
     private int CalculateRequiredXP()

@@ -22,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
     public Animator animator;
     public Tilemap tilemap;
     private TileInteraction tileInteraction;
+    public int AbilitiesSelected;
 
     [Header("Dash Settings")]
     [SerializeField] float dashSpeed = 10f;
@@ -29,14 +30,17 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float dashCooldown = 1;
     bool isDashing;
     bool canDash = true;
+    public TrailRenderer dashTrail;
 
     private PlayerAttack playerAttack;
+    private AbilityManager abilityManager;
 
     private void Start()
     {
         canDash = true;
         tileInteraction = GetComponent<TileInteraction>();
         playerAttack = GetComponent<PlayerAttack>();
+        abilityManager = FindObjectOfType<AbilityManager>();
     }
 
     // Update is called once per frame
@@ -88,6 +92,16 @@ public class PlayerMovement : MonoBehaviour
         {
             StartCoroutine(Dash());
         }
+
+        if(!hasDashAbility)
+        {
+            dashTrail.enabled = false;
+        }
+
+        if(hasDashAbility)
+        {
+            dashTrail.enabled = true;
+        }
     }
 
     void FixedUpdate()
@@ -130,35 +144,55 @@ public class PlayerMovement : MonoBehaviour
     {
         canDash = false;
         isDashing = true;
+
+        // Enable the trail when dashing starts
+        if (dashTrail != null)
+            dashTrail.emitting = true;
+
         rb.velocity = new Vector2(moveDirection.x * dashSpeed, moveDirection.y * dashSpeed);
         yield return new WaitForSeconds(dashDuration);
+
         isDashing = false;
+
+        // Disable the trail when dashing is finished
+        if (dashTrail != null)
+            dashTrail.emitting = false;
 
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
     }
 
-    private void ActivateSpeedAbility()
+    public void ActivateSpeedAbility()
     {
+        hasSpeedAbility = true;
         moveSpeed += 5;
         speedAbilityActivated = true;
+
+        if (abilityManager != null && abilityManager.speedUpIcon != null) abilityManager.speedUpIcon.enabled = true;
     }
 
-    private void DeactivateSpeedAbility()
+    public void DeactivateSpeedAbility()
     {
+        hasSpeedAbility = true;
         moveSpeed -= 5;
         speedAbilityActivated = false;
+
+        if (abilityManager != null && abilityManager.speedUpIcon != null) abilityManager.speedUpIcon.enabled = false;
     }
 
-    private void ActivateDashAbility()
+    public void ActivateDashAbility()
     {
         hasDashAbility = true;
         dashAbilityActivated = true;
+
+        if (abilityManager != null && abilityManager.dashIcon != null) abilityManager.dashIcon.enabled = true;
     }
 
-    private void DeactivateDashAbility()
+    public void DeactivateDashAbility()
     {
         hasDashAbility = false;
         dashAbilityActivated = false;
+
+        if (abilityManager != null && abilityManager.dashIcon != null) abilityManager.dashIcon.enabled = false;
     }
 }

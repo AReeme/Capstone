@@ -29,10 +29,13 @@ public class Health : MonoBehaviour
     float healCooldown = 10f;
     bool canHeal = true;
 
+    private AbilityManager abilityManager;
+
     private void Start()
     {
         canHeal = true;
         health = MAX_HEATH;
+        abilityManager = FindObjectOfType<AbilityManager>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
@@ -54,7 +57,13 @@ public class Health : MonoBehaviour
 
         if (hasRegenAbility && canHeal)
         {
+            if (abilityManager != null && abilityManager.regenIcon != null) abilityManager.regenIcon.enabled = true;
             StartCoroutine(Regen());
+        }
+
+        if(!hasRegenAbility)
+        {
+            if (abilityManager != null && abilityManager.regenIcon != null) abilityManager.regenIcon.enabled = false;
         }
     }
 
@@ -68,6 +77,16 @@ public class Health : MonoBehaviour
         if (!hasHealthUpAbility && healthAbilityActivated)
         {
             DeactivateHealthUpAbility();
+        }
+
+        if (hasRegenAbility && canHeal)
+        {
+            ActivateRegenAbility();
+        }
+
+        if (!hasRegenAbility)
+        {
+            if (abilityManager != null && abilityManager.regenIcon != null) abilityManager.regenIcon.enabled = false;
         }
     }
 
@@ -178,13 +197,23 @@ public class Health : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void ActivateHealthUpAbility()
+    public void ActivateRegenAbility()
     {
+        hasRegenAbility = true;
+        if (abilityManager != null && abilityManager.regenIcon != null) abilityManager.regenIcon.enabled = true;
+        StartCoroutine(Regen());
+    }
+
+    public void ActivateHealthUpAbility()
+    {
+        hasHealthUpAbility = true;
         if (!healthAbilityActivated)
         {
             health += 50;
             MAX_HEATH = health;
             healthAbilityActivated = true;
+
+            if (abilityManager != null && abilityManager.healthUpIcon != null) abilityManager.healthUpIcon.enabled = true;
         }
     }
 
@@ -195,6 +224,8 @@ public class Health : MonoBehaviour
             health -= 50;
             MAX_HEATH = health;
             healthAbilityActivated = false;
+
+            if (abilityManager != null && abilityManager.healthUpIcon != null) abilityManager.healthUpIcon.enabled = false;
         }
     }
 }

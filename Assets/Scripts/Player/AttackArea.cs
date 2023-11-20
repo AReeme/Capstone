@@ -22,8 +22,12 @@ public class AttackArea : MonoBehaviour
     private bool damageUpAbilityActivated = false;
     private PlayerAttack playerAttack;
 
+    private AbilityManager abilityManager;
+
     public void Start()
     {
+        abilityManager = FindObjectOfType<AbilityManager>();
+
         hasSword = animator.GetBool("HasSword");
         hasAxe = animator.GetBool("HasAxe");
         hasBow = animator.GetBool("HasBow");
@@ -133,11 +137,13 @@ public class AttackArea : MonoBehaviour
         damage += weaponDamage;
     }
 
-    private void ActivateDamageUpAbility()
+    public void ActivateDamageUpAbility()
     {
         hasDamageUpAbility = true;
         damageUpAbilityActivated = true;
         damage += 5;
+
+        if (abilityManager != null && abilityManager.damageUpIcon != null) abilityManager.damageUpIcon.enabled = true;
     }
 
     private void DeactivateDamageUpAbility()
@@ -145,5 +151,7 @@ public class AttackArea : MonoBehaviour
         hasDamageUpAbility = false;
         damageUpAbilityActivated = false;
         damage -= 5;
+
+        if (abilityManager != null && abilityManager.damageUpIcon != null) abilityManager.damageUpIcon.enabled = false;
     }
 }
