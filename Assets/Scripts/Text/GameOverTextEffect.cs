@@ -1,5 +1,6 @@
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameOverTextEffect : MonoBehaviour
@@ -12,6 +13,8 @@ public class GameOverTextEffect : MonoBehaviour
 
     // Reference to the TransitionOne script
     [SerializeField] private TransitionOne transitionOne;
+
+    private bool skipTextAnimation = false;
 
     void Start()
     {
@@ -36,12 +39,7 @@ public class GameOverTextEffect : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            letterDelay = 0;
-        }
-
-        if (Input.GetKeyUp(KeyCode.R))
-        {
-            letterDelay = 0.1f;
+            skipTextAnimation = true;
         }
     }
 
@@ -52,6 +50,12 @@ public class GameOverTextEffect : MonoBehaviour
 
         for (int i = 0; i < originalText.Length; i++)
         {
+            if (skipTextAnimation)
+            {
+                gameOverText.text = originalText;
+                break;
+            }
+
             gameOverText.text += originalText[i];
             yield return new WaitForSeconds(letterDelay);
         }  
