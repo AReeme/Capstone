@@ -1,7 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 public class GameOverTextEffect : MonoBehaviour
 {
@@ -9,11 +8,16 @@ public class GameOverTextEffect : MonoBehaviour
     private TextMeshProUGUI gameOverText;
     [SerializeField] private GameObject startGameButton;
     [SerializeField] private GameObject quitGameButton;
+    [SerializeField] private GameObject saveGameButton;
+
+    // Reference to the TransitionOne script
+    [SerializeField] private TransitionOne transitionOne;
 
     void Start()
     {
         startGameButton.SetActive(false);
         quitGameButton.SetActive(false);
+        saveGameButton.SetActive(false);
         gameOverText = GetComponent<TextMeshProUGUI>();
         StartCoroutine(ShowText());
     }
@@ -23,13 +27,22 @@ public class GameOverTextEffect : MonoBehaviour
         string originalText = gameOverText.text;
         gameOverText.text = "";
 
-        for (int i = 0; i < originalText.Length; i++)
-        {
-            gameOverText.text += originalText[i];
-            yield return new WaitForSeconds(letterDelay);
-        }
+#if DEBUG
+        yield return null;
+#else
+    for (int i = 0; i < originalText.Length; i++)
+    {
+        gameOverText.text += originalText[i];
+        yield return new WaitForSeconds(letterDelay);
+    }  
+#endif
 
+        // Show buttons
         startGameButton.SetActive(true);
         quitGameButton.SetActive(true);
+        saveGameButton.SetActive(true);
+
+        // Call OnTextAnimationComplete directly
+        transitionOne.OnTextAnimationComplete();
     }
 }

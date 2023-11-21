@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Character Settings")]
     public float moveSpeed = 5f;
     Vector2 movement;
-    Vector2 moveDirection;
+    Vector2 moveDirection = Vector2.zero;
     public Rigidbody2D rb;
     public Animator animator;
     public Tilemap tilemap;
@@ -37,6 +37,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
+        hasDashAbility = (bool)GiveValues.instance?.dash;
+        hasSpeedAbility = (bool)GiveValues.instance?.speedUp;
         canDash = true;
         tileInteraction = GetComponent<TileInteraction>();
         playerAttack = GetComponent<PlayerAttack>();
@@ -62,10 +64,8 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("Vertical", movement.y);
         animator.SetFloat("Speed", movement.sqrMagnitude);
 
-        if (Input.GetAxisRaw("Horizontal") == 1 ||
-            Input.GetAxisRaw("Horizontal") == -1 ||
-            Input.GetAxisRaw("Vertical") == 1 ||
-            Input.GetAxisRaw("Vertical") == -1)
+        if (Input.GetAxisRaw("Horizontal") != 0 ||
+            Input.GetAxisRaw("Vertical") != 0)
         {
             animator.SetFloat("Last_Horizontal", Input.GetAxisRaw("Horizontal"));
             animator.SetFloat("Last_Vertical", Input.GetAxisRaw("Vertical"));
@@ -86,7 +86,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        moveDirection = new Vector2(movement.x * moveSpeed, movement.y * moveSpeed);
+        moveDirection = movement.normalized * moveSpeed;
 
         if (Input.GetKeyDown(KeyCode.E) && hasDashAbility && canDash) 
         {
@@ -131,7 +131,7 @@ public class PlayerMovement : MonoBehaviour
             DeactivateDashAbility();
         }
 
-        Vector2 newPosition = rb.position + movement * moveSpeed * Time.fixedDeltaTime;
+        Vector2 newPosition = rb.position + movement.normalized * moveSpeed * Time.fixedDeltaTime;
 
         // Check if the next position is not a wall tile using the TileInteraction script.
         if (!tileInteraction.IsNextPositionWall(newPosition))
@@ -150,6 +150,7 @@ public class PlayerMovement : MonoBehaviour
             dashTrail.emitting = true;
 
         rb.velocity = new Vector2(moveDirection.x * dashSpeed, moveDirection.y * dashSpeed);
+        //rb.velocity = dash * dashSpeed;
         yield return new WaitForSeconds(dashDuration);
 
         isDashing = false;

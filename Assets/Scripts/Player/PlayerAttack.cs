@@ -20,7 +20,7 @@ public class PlayerAttack : MonoBehaviour
     public GameObject arrowPrefab;
     public float arrowSpeed = 10f;
     bool canShoot = true;
-    bool isShooting;
+    //bool isShooting;
 
     [Header("Weapon Durability")]
     public int swordDurability = 15;
@@ -192,11 +192,11 @@ public class PlayerAttack : MonoBehaviour
     {
         attacking = true;
         canShoot = false;
-        isShooting = true;
+        //isShooting = true;
         yield return new WaitForSeconds(0.1f);
         ShootArrow();
         yield return new WaitForSeconds(0.4f);
-        isShooting = false;
+        //isShooting = false;
         yield return new WaitForSeconds(0.5f);
         canShoot = true;
     }

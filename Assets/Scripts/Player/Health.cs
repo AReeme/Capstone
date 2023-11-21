@@ -11,7 +11,7 @@ public class Health : MonoBehaviour
     public Animator anim;
     
     [Header("Health Settings")]
-    public float health;
+    public float health = 100;
     private float lerpTimer;
     public float MAX_HEATH = 100f;
 
@@ -33,8 +33,12 @@ public class Health : MonoBehaviour
 
     private void Start()
     {
+        health = (float)GiveValues.instance?.health;
+        MAX_HEATH = (float)GiveValues.instance?.MAX_HELATH;
+        hasRegenAbility = (bool)GiveValues.instance?.regen;
+        hasHealthUpAbility = (bool)GiveValues.instance?.healthUp;
         canHeal = true;
-        health = MAX_HEATH;
+        //health = MAX_HEATH;
         abilityManager = FindObjectOfType<AbilityManager>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();

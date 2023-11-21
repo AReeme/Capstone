@@ -31,6 +31,9 @@ public class LevelSystem : MonoBehaviour
 
     void Start()
     {
+        level = (int)GiveValues.instance?.level;
+        currentXP = (float)GiveValues.instance?.xp;
+        requiredXP = (float)GiveValues.instance?.requiredXp;
         frontXPBar.fillAmount = currentXP / requiredXP;
         backXPBar.fillAmount = currentXP / requiredXP;
 

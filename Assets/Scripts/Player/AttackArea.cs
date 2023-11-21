@@ -26,6 +26,8 @@ public class AttackArea : MonoBehaviour
 
     public void Start()
     {
+        hasDamageUpAbility = (bool)GiveValues.instance?.damageUp;
+
         abilityManager = FindObjectOfType<AbilityManager>();
 
         hasSword = animator.GetBool("HasSword");
