@@ -22,20 +22,39 @@ public class GameOverTextEffect : MonoBehaviour
         StartCoroutine(ShowText());
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            letterDelay /= 2;
+        }
+
+        if (Input.GetKeyUp(KeyCode.E))
+        {
+            letterDelay *= 2;
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            letterDelay = 0;
+        }
+
+        if (Input.GetKeyUp(KeyCode.R))
+        {
+            letterDelay = 0.1f;
+        }
+    }
+
     IEnumerator ShowText()
     {
         string originalText = gameOverText.text;
         gameOverText.text = "";
 
-#if DEBUG
-        yield return null;
-#else
-    for (int i = 0; i < originalText.Length; i++)
-    {
-        gameOverText.text += originalText[i];
-        yield return new WaitForSeconds(letterDelay);
-    }  
-#endif
+        for (int i = 0; i < originalText.Length; i++)
+        {
+            gameOverText.text += originalText[i];
+            yield return new WaitForSeconds(letterDelay);
+        }  
 
         // Show buttons
         startGameButton.SetActive(true);
