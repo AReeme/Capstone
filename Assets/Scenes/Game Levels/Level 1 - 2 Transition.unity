@@ -1052,6 +1052,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   level: 0
   health: 0
+  MAX_HELATH: 100
   xp: 0
   requiredXp: 0
   hasDashAbility: 0

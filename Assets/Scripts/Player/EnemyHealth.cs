@@ -9,13 +9,19 @@ public class EnemyHealth : MonoBehaviour
     public EnemyController eController;
 
     [SerializeField]
-    public float health = 100;
-    private float MAX_HEATH = 100;
+    public float eHealth = 100;
+    private float eMAX_HEATH = 100000;
 
     public void Start()
     {
         player = GameObject.FindWithTag("Player").transform;
         playerLevel = player.GetComponent<LevelSystem>();
+
+        // Add a Rigidbody2D component to the enemy
+        if (GetComponent<Rigidbody2D>() == null)
+        {
+            gameObject.AddComponent<Rigidbody2D>();
+        }
     }
 
     void Update()
@@ -40,8 +46,11 @@ public class EnemyHealth : MonoBehaviour
 
     public void SetHealth(int maxHealth, int health)
     {
-        this.MAX_HEATH = maxHealth;
-        this.health = health;
+        eController = GetComponent<EnemyController>();
+        float scalingFactor = 0.1f;
+
+        eMAX_HEATH = maxHealth + (int)(maxHealth * eController.enemyLevel * scalingFactor);
+        eHealth = health + (int)(health * eController.enemyLevel * scalingFactor);
     }
 
     public void Damage(float amount)
@@ -52,10 +61,10 @@ public class EnemyHealth : MonoBehaviour
             throw new System.ArgumentOutOfRangeException("Cannot have negative damage.");
         }
 
-        this.health -= amount;
+        eHealth -= amount;
         StartCoroutine(VisualIndicator(Color.red));
 
-        if (health <= 0)
+        if (eHealth <= 0)
         {
             Die();
         }
@@ -68,15 +77,15 @@ public class EnemyHealth : MonoBehaviour
             throw new System.ArgumentOutOfRangeException("Cannot have negative healing.");
         }
 
-        bool wouldBeOverMaxHealth = health + amount > MAX_HEATH;
+        bool wouldBeOverMaxHealth = eHealth + amount > eMAX_HEATH;
         StartCoroutine(VisualIndicator(Color.green));
 
         if (wouldBeOverMaxHealth)
         {
-            this.health = MAX_HEATH;
+            eHealth = eMAX_HEATH;
         } else
         {
-            this.health += amount;
+            eHealth += amount;
         }
     }
 

@@ -15,3 +15,4 @@ MonoBehaviour:
   lootSprite: {fileID: 21300000, guid: 7a3446dfaf151124c93708da94b8a255, type: 3}
   lootName: Axe
   dropChance: 10
+  lootType: 1

@@ -11,7 +11,6 @@ public class TransitionOne : MonoBehaviour
     {
         // Retrieve the latest level value from SavingManager
         int latestLevel = sm.level;
-        Debug.Log(latestLevel);
 
         // Update the text with the latest level value
         levelComplete.text = "Level Complete!\n\n" +

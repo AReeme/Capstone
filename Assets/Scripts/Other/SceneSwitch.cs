@@ -25,6 +25,8 @@ public class SceneSwitch : MonoBehaviour
     bool hasSpeedUpAbility;
     [SerializeField] PlayerMovement speedAbility;
 
+    public Animator transitionAnim;
+
     private void Update()
     {
         level = levelD.level;
@@ -65,6 +67,7 @@ public class SceneSwitch : MonoBehaviour
             GiveValues.instance.speedUp = speedDataToKeep;
             bool healthUpToKeep = hasHealthUpAbility;
             GiveValues.instance.healthUp = healthUpToKeep;
+
             SceneManager.LoadScene(sceneToLoad);
         }
     }

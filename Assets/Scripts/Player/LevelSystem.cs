@@ -108,9 +108,14 @@ public class LevelSystem : MonoBehaviour
         requiredXP = CalculateRequiredXP();
         levelText.text = "Level " + level;
 
-        if (level % 5 == 0)
+        if (level % 5 == 0) 
         {
             abilityMenu.ShowAbilityMenu();
+        }
+
+        if (level >= 25)
+        {
+            abilityMenu.enabled = false;
         }
     }
 

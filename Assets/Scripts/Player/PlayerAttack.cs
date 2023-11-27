@@ -7,7 +7,13 @@ public class PlayerAttack : MonoBehaviour
     public bool hasAxe;
     public bool hasBow;
 
-    [Header("Attack Area Settings")]
+    [Header("Audio")]
+    public AudioSource swordSwing;
+    public AudioSource axeSwing;
+    public AudioSource bowAttack;
+    public AudioSource punchAttack;
+
+    [Header("AttackArea Settings")]
     private GameObject attackArea = default;
     public Arrow arrowScript;
     private bool attacking = false;
@@ -106,6 +112,8 @@ public class PlayerAttack : MonoBehaviour
                 attacking = true;
                 attackArea.SetActive(attacking);
                 animator.SetBool("isSwordAttack", true);
+                swordSwing.Play();
+                DeductSwordDurability();
             }
         }
         else if (hasAxe && currentAxeDurability > 0)
@@ -122,6 +130,8 @@ public class PlayerAttack : MonoBehaviour
                 attacking = true;
                 attackArea.SetActive(attacking);
                 animator.SetBool("isAxeAttack", true);
+                axeSwing.Play();
+                DeductAxeDurability();
             }
         }
         else if (hasBow && canShoot && currentBowDurability > 0)
@@ -145,6 +155,7 @@ public class PlayerAttack : MonoBehaviour
             attacking = true;
             attackArea.SetActive(attacking);
             animator.SetBool("isAttack", true);
+            punchAttack.Play();
         }
     }
 
@@ -169,11 +180,29 @@ public class PlayerAttack : MonoBehaviour
             shootDirection = new Vector2(horizontal, vertical).normalized;
         }
 
-        if (horizontal > 0)
+        if (horizontal > 0 && vertical > 0)
+        {
+            arrowRenderer.flipX = true;
+            arrow.transform.Rotate(Vector3.forward * 45);
+        }
+        else if (horizontal < 0 && vertical > 0)
+        {
+            arrow.transform.Rotate(Vector3.forward * -45);
+        }
+        else if (horizontal > 0 && vertical < 0)
+        {
+            arrowRenderer.flipX = true;
+            arrow.transform.Rotate(Vector3.forward * -45);
+        }
+        else if (horizontal < 0 && vertical < 0)
+        {
+            arrow.transform.Rotate(Vector3.forward * 45);
+        }
+        else if (horizontal > 0)
         {
             arrowRenderer.flipX = true;
         }
-        if (vertical > 0)
+        else if (vertical > 0)
         {
             arrow.transform.Rotate(Vector3.forward * -90);
         }
@@ -185,7 +214,11 @@ public class PlayerAttack : MonoBehaviour
         Rigidbody2D arrowRb = arrow.GetComponent<Rigidbody2D>();
         arrowRb.velocity = new Vector2(shootDirection.x * arrowSpeed, shootDirection.y * arrowSpeed);
 
+        bowAttack.Play();
+
         Destroy(arrow, 2f);
+
+        DeductBowDurability();
     }
 
     private IEnumerator ShootCooldown()
@@ -243,23 +276,40 @@ public class PlayerAttack : MonoBehaviour
         if (hasSword)
         {
             currentSwordDurability = swordDurability;
+            animator.SetBool("HasAxe", false);
             animator.SetBool("HasSword", false);
+            animator.SetBool("HasBow", false);
             animator.SetBool("isSwordAttack", false);
+            animator.SetBool("isAxeAttack", false);
+            animator.SetBool("isBowAttack", false);
+            swordDurability = 30;
         }
         else if (hasAxe)
         {
             currentAxeDurability = axeDurability;
             animator.SetBool("HasAxe", false);
+            animator.SetBool("HasSword", false);
+            animator.SetBool("HasBow", false);
+            animator.SetBool("isSwordAttack", false);
             animator.SetBool("isAxeAttack", false);
+            animator.SetBool("isBowAttack", false);
+            axeDurability = 10;
         }
         else if (hasBow)
         {
             currentBowDurability = bowDurability;
+            animator.SetBool("HasAxe", false);
+            animator.SetBool("HasSword", false);
             animator.SetBool("HasBow", false);
+            animator.SetBool("isSwordAttack", false);
+            animator.SetBool("isAxeAttack", false);
             animator.SetBool("isBowAttack", false);
+            bowDurability = 20;
         }
 
-        // Add any additional logic to handle the switch to regular attack
+        animator.SetBool("isSwordAttack", false);
+        animator.SetBool("isAxeAttack", false);
+        animator.SetBool("isBowAttack", false);
         animator.SetBool("isAttack", false);
     }
 }

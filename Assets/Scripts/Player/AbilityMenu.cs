@@ -12,7 +12,7 @@ public class AbilityMenu : MonoBehaviour
     public AttackArea playerAttack;
 
     public TextMeshProUGUI abilityInfoText;
-    public Button[] abilityButtons; // Assign these buttons in the Unity Inspector
+    public Button[] abilityButtons;
 
     private bool isMenuActive = false;
 
@@ -33,9 +33,12 @@ public class AbilityMenu : MonoBehaviour
 
     public void ShowAbilityMenu()
     {
-        Time.timeScale = 0f; // Pause the game
-        abilityMenu.SetActive(true);
-        isMenuActive = true;
+        if (levelSystem.level <= 25)
+        {
+            Time.timeScale = 0f; // Pause the game
+            abilityMenu.SetActive(true);
+            isMenuActive = true;
+        }
     }
 
     private void HideAbilityMenu()

@@ -192,7 +192,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eController: {fileID: 3536960343062900998}
-  health: 20
+  eHealth: 40
 --- !u!70 &2820854281948760642
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -226,6 +226,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e1d375a995612af4981caff2f7f6cb50, type: 2}
   - {fileID: 11400000, guid: 72fdac37541d79b4abe2ec64d34503aa, type: 2}
   - {fileID: 11400000, guid: 8d3c60411cf78b44aaa971aeff2c1743, type: 2}
+  weaponSwitchCooldown: 1
 --- !u!1 &3644011415533910074
 GameObject:
   m_ObjectHideFlags: 0
@@ -314,3 +315,4 @@ MonoBehaviour:
   OnDone:
     m_PersistentCalls:
       m_Calls: []
+  hasDamageUpAbility: 0

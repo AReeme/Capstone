@@ -30,6 +30,8 @@ public class Health : MonoBehaviour
     bool canHeal = true;
 
     private AbilityManager abilityManager;
+    public AudioSource damageSound;
+    public AudioSource deathSound;
 
     private void Start()
     {
@@ -145,6 +147,7 @@ public class Health : MonoBehaviour
 
         healthManager.TakeDamage(amount);
         lerpTimer = 0f;
+        damageSound.Play();
         StartCoroutine(VisualIndicator(Color.red));
 
         if (health <= 0)
@@ -175,6 +178,7 @@ public class Health : MonoBehaviour
     private void Die()
     {
         rb.bodyType = RigidbodyType2D.Static;
+        deathSound.Play();
         anim.SetTrigger("Death");
         Invoke("SwitchScene", 1.1f);
         

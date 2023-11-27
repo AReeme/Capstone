@@ -17,6 +17,15 @@ public class DamageScript : MonoBehaviour
         }
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            isPlayerOnTile = true;
+            InvokeRepeating("InflictDamage", 0f, 1f);
+        }
+    }
+
     private void OnTriggerExit2D(Collider2D collider)
     {
         if (collider.CompareTag("Player"))
