@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 489164901149176938}
   - component: {fileID: 489164901149176936}
   - component: {fileID: 7440381157993524809}
+  - component: {fileID: -809938899282800609}
   m_Layer: 0
   m_Name: LootPrefab
   m_TagString: Untagged
@@ -133,3 +134,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &-809938899282800609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 489164901149176933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eae8d85031d75eb48b83f2fe47072c80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
