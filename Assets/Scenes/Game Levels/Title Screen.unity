@@ -548,7 +548,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Start Game
+  m_text: New Game
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4248188e9df16044db4b7dcda63d2357, type: 2}
   m_sharedMaterial: {fileID: -4172557761347775214, guid: 4248188e9df16044db4b7dcda63d2357, type: 2}
@@ -654,6 +654,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56b3c40be5b6c6f4eb45e078220d8e22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gv: {fileID: 2010805198}
 --- !u!4 &602499528
 Transform:
   m_ObjectHideFlags: 0
@@ -2035,6 +2036,8 @@ MonoBehaviour:
   healthUp: 0
   speedUp: 0
   damageUp: 0
+  enemiesKilled: 0
+  damageTaken: 0
 --- !u!4 &2010805199
 Transform:
   m_ObjectHideFlags: 0

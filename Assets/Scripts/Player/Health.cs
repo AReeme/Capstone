@@ -33,12 +33,15 @@ public class Health : MonoBehaviour
     public AudioSource damageSound;
     public AudioSource deathSound;
 
+    public float damageTaken;
+
     private void Start()
     {
         health = (float)GiveValues.instance?.health;
         MAX_HEATH = (float)GiveValues.instance?.MAX_HELATH;
         hasRegenAbility = (bool)GiveValues.instance?.regen;
         hasHealthUpAbility = (bool)GiveValues.instance?.healthUp;
+        damageTaken= (float)GiveValues.instance?.damageTaken;
         canHeal = true;
         //health = MAX_HEATH;
         abilityManager = FindObjectOfType<AbilityManager>();
@@ -154,6 +157,8 @@ public class Health : MonoBehaviour
         {
             Die();
         }
+
+        damageTaken = amount + damageTaken;
     }
 
     public void Heal(int amount)

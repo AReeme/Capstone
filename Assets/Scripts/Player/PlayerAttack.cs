@@ -13,6 +13,8 @@ public class PlayerAttack : MonoBehaviour
     public AudioSource bowAttack;
     public AudioSource punchAttack;
 
+    public int enemiesKilled;
+
     [Header("AttackArea Settings")]
     private GameObject attackArea = default;
     public Arrow arrowScript;
@@ -40,6 +42,7 @@ public class PlayerAttack : MonoBehaviour
 
     void Start()
     {
+        enemiesKilled = (int)GiveValues.instance?.enemiesKilled;
         attackArea = transform.GetChild(0).gameObject;
         currentSwordDurability = swordDurability;
         currentAxeDurability = axeDurability;

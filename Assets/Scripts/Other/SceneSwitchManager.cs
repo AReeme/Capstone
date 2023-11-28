@@ -6,8 +6,23 @@ using UnityEngine.SceneManagement;
 
 public class SceneSwitchManager : MonoBehaviour
 {
+    [SerializeField] GiveValues gv;
+
     public void SwitchToStoryScene()
     {
+        gv.level = 1;
+        gv.health = 100;
+        gv.MAX_HELATH = 100;
+        gv.xp = 0;
+        gv.requiredXp = 83;
+        gv.dash = false;
+        gv.regen = false;
+        gv.healthUp = false;
+        gv.speedUp = false;
+        gv.damageUp = false;
+        gv.enemiesKilled = 0;
+        gv.damageTaken = 0;
+        gv.timeSurvived = 0;
         SceneManager.LoadScene("Story");
     }
 

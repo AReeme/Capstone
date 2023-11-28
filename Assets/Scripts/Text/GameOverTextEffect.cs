@@ -13,6 +13,8 @@ public class GameOverTextEffect : MonoBehaviour
 
     // Reference to the TransitionOne script
     [SerializeField] private TransitionOne transitionOne;
+    [SerializeField] private TransitionTwo transitionTwo;
+    [SerializeField] private TransitionThree transitionThree;
 
     private bool skipTextAnimation = false;
 
@@ -66,6 +68,19 @@ public class GameOverTextEffect : MonoBehaviour
         saveGameButton.SetActive(true);
 
         // Call OnTextAnimationComplete directly
-        transitionOne.OnTextAnimationComplete();
+        if (transitionOne != null) 
+        {
+            transitionOne.OnTextAnimationComplete();
+        }
+
+        if (transitionTwo != null)
+        {
+            transitionTwo.OnTextAnimationComplete();
+        }
+
+        if (transitionThree != null)
+        {
+            transitionThree.OnTextAnimationComplete();
+        }
     }
 }

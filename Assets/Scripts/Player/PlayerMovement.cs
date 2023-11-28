@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     private bool dashAbilityActivated = false;
     public bool hasSpeedAbility;
     private bool speedAbilityActivated = false;
+    public float timeSurvived;
 
     [Header("Character Settings")]
     public float moveSpeed = 5f;
@@ -39,6 +40,7 @@ public class PlayerMovement : MonoBehaviour
     {
         hasDashAbility = (bool)GiveValues.instance?.dash;
         hasSpeedAbility = (bool)GiveValues.instance?.speedUp;
+        timeSurvived = (float)GiveValues.instance?.timeSurvived;
         canDash = true;
         tileInteraction = GetComponent<TileInteraction>();
         playerAttack = GetComponent<PlayerAttack>();
@@ -48,6 +50,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        timeSurvived += Time.deltaTime;
         if(isDashing)
         {
             return;

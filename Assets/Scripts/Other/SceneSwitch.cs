@@ -9,6 +9,7 @@ public class SceneSwitch : MonoBehaviour
     [SerializeField] LevelSystem levelD;
     float health;
     float maxhealh;
+    float damageTaken;
     [SerializeField] Health healthD;
     float xp;
     [SerializeField] LevelSystem xpD;
@@ -24,8 +25,9 @@ public class SceneSwitch : MonoBehaviour
     [SerializeField] AttackArea damageUpAbility;
     bool hasSpeedUpAbility;
     [SerializeField] PlayerMovement speedAbility;
-
-    public Animator transitionAnim;
+    int enemiesKilled;
+    [SerializeField] PlayerAttack playerAttack;
+    float timeSurvived;
 
     private void Update()
     {
@@ -39,6 +41,9 @@ public class SceneSwitch : MonoBehaviour
         hasHealthUpAbility = healthUpAbility.hasHealthUpAbility;
         hasDamageUpAbility = damageUpAbility.hasDamageUpAbility;
         hasSpeedUpAbility = speedAbility.hasSpeedAbility;
+        enemiesKilled = playerAttack.enemiesKilled;
+        damageTaken = healthD.damageTaken;
+        timeSurvived = speedAbility.timeSurvived;
     }
 
     public string sceneToLoad;
@@ -67,6 +72,12 @@ public class SceneSwitch : MonoBehaviour
             GiveValues.instance.speedUp = speedDataToKeep;
             bool healthUpToKeep = hasHealthUpAbility;
             GiveValues.instance.healthUp = healthUpToKeep;
+            int eKilledDataToKeep = enemiesKilled;
+            GiveValues.instance.enemiesKilled = eKilledDataToKeep;
+            float damageTDataToKeep = damageTaken;
+            GiveValues.instance.damageTaken = damageTDataToKeep;
+            float timeSurvivedDataToKeep = timeSurvived;
+            GiveValues.instance.timeSurvived = timeSurvivedDataToKeep;
 
             SceneManager.LoadScene(sceneToLoad);
         }

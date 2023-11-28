@@ -16,6 +16,9 @@ public class SavingManager : MonoBehaviour
     public bool hasDamageUpAbility;
     public bool hasSpeedUpAbility;
     public string currentScene;
+    public int enemiesKilled;
+    public float damageTaken;
+    public float timeSurvived;
 
     GiveValues gv;
 
@@ -32,6 +35,9 @@ public class SavingManager : MonoBehaviour
         hasHealthUpAbility = gv.healthUp;
         hasDamageUpAbility = gv.damageUp;
         hasSpeedUpAbility = gv.speedUp;
+        enemiesKilled = gv.enemiesKilled;
+        damageTaken = gv.damageTaken;
+        timeSurvived =gv.timeSurvived;
         currentScene = SceneManager.GetActiveScene().name;
     }
 
@@ -49,6 +55,9 @@ public class SavingManager : MonoBehaviour
             {"hasHealthUpAbility", GiveValues.instance.healthUp},
             {"hasDamageUpAbility", GiveValues.instance.damageUp},
             {"hasSpeedUpAbility", GiveValues.instance.speedUp},
+            {"enemiesKilled", GiveValues.instance.enemiesKilled},
+            {"damageTaken", GiveValues.instance.damageTaken},
+            {"timeSurvived", GiveValues.instance.timeSurvived},
         };
 
         SaveSystem.SavePlayer(values, currentScene);
@@ -81,6 +90,9 @@ public class SavingManager : MonoBehaviour
             GiveValues.instance.healthUp = (bool)loadedData["hasHealthUpAbility"];
             GiveValues.instance.speedUp = (bool)loadedData["hasSpeedUpAbility"];
             GiveValues.instance.damageUp = (bool)loadedData["hasDamageUpAbility"];
+            GiveValues.instance.enemiesKilled = (int)loadedData["enemiesKilled"];
+            GiveValues.instance.damageTaken = (int)loadedData["damageTaken"];
+            GiveValues.instance.timeSurvived = (int)loadedData["timeSurvived"];
 
             // Assign the current scene
             currentScene = (string)loadedData["currentScene"];
@@ -89,11 +101,11 @@ public class SavingManager : MonoBehaviour
             SceneManager.LoadScene(currentScene);
 
             // Debug logs
-            Debug.Log("Loaded player data:");
-            Debug.Log("Level: " + level);
-            Debug.Log("Health: " + health);
-            Debug.Log("XP: " + xp);
-            Debug.Log("Current Scene: " + currentScene);
+            //Debug.Log("Loaded player data:");
+            //Debug.Log("Level: " + level);
+            //Debug.Log("Health: " + health);
+            //Debug.Log("XP: " + xp);
+            //Debug.Log("Current Scene: " + currentScene);
         }
     }
 }

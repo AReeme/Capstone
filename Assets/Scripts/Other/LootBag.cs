@@ -11,25 +11,6 @@ public class LootBag : MonoBehaviour
     public List<Loot> lootList = new List<Loot>();
     private LootType lootTypeToApply;
 
-    private bool hasSpawnedLoot = false;
-
-    private void Start()
-    {
-        
-        //// Get the AttackArea component from the player's children
-        //attackArea = GameObject.FindWithTag("Player").GetComponentInChildren<AttackArea>();
-
-        //// Check if attackArea is null
-        //if (attackArea == null)
-        //{
-        //    Debug.LogError("AttackArea component not found.");
-        //}
-        //else
-        //{
-        //    Debug.Log("AttackArea component found.");
-        //}
-    }
-
     Loot GetDroppedItem()
     {
         int randomNumber = Random.Range(1, 101);
@@ -52,22 +33,19 @@ public class LootBag : MonoBehaviour
 
     public void InstantiateLoot(Vector3 spawnPosition)
     {
-             Loot droppedItem = GetDroppedItem();
-            if (droppedItem != null)
-            {
-                lootTypeToApply = droppedItem.lootType;
-                GameObject lootGameObject = Instantiate(droppedItemPrefab, spawnPosition, Quaternion.identity);
-                lootGameObject.GetComponent<LootDrop>().SetDropType(lootTypeToApply);
-                lootGameObject.GetComponent<SpriteRenderer>().sprite = droppedItem.lootSprite;
+        Loot droppedItem = GetDroppedItem();
+        if (droppedItem != null)
+        {
+            lootTypeToApply = droppedItem.lootType;
+            GameObject lootGameObject = Instantiate(droppedItemPrefab, spawnPosition, Quaternion.identity);
+            lootGameObject.GetComponent<LootDrop>().SetDropType(lootTypeToApply);
+            lootGameObject.GetComponent<SpriteRenderer>().sprite = droppedItem.lootSprite;
 
-                BoxCollider2D prefabCollider = droppedItemPrefab.GetComponent<BoxCollider2D>();
-                BoxCollider2D lootCollider = lootGameObject.GetComponent<BoxCollider2D>();
+            BoxCollider2D prefabCollider = droppedItemPrefab.GetComponent<BoxCollider2D>();
+            BoxCollider2D lootCollider = lootGameObject.GetComponent<BoxCollider2D>();
 
-                lootCollider.size = prefabCollider.size;
-                lootCollider.offset = prefabCollider.offset;
-
-                // Set the flag to true, indicating that loot has been spawned
-                hasSpawnedLoot = true;
-            }
+            lootCollider.size = prefabCollider.size;
+            lootCollider.offset = prefabCollider.offset;
         }
-    }
+     }
+}

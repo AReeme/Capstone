@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -15,6 +16,9 @@ public class GiveValues : MonoBehaviour
     public bool healthUp = false;
     public bool speedUp = false;
     public bool damageUp = false;
+    public int enemiesKilled = 0;
+    public float damageTaken = 0;
+    public float timeSurvived = 0;
 
     public static GiveValues instance;
 
@@ -59,20 +63,23 @@ public class GiveValues : MonoBehaviour
             healthUp = (bool)loadedData["hasHealthUpAbility"];
             speedUp = (bool)loadedData["hasSpeedUpAbility"];
             damageUp = (bool)loadedData["hasDamageUpAbility"];
+            enemiesKilled = (int)loadedData["enemiesKilled"];
+            damageTaken = (float)loadedData["damageTaken"];
+            timeSurvived = (float)loadedData["timeSurvived"];
 
             // Use SceneManager to change the scene
             SceneManager.LoadScene((string)loadedData["currentScene"]);
         }
 
-        // Debug logs for final values
-        Debug.Log("Final values after initialization:");
-        Debug.Log($"Level: {level}");
-        Debug.Log($"Health: {health}");
-        Debug.Log($"XP: {xp}");
-        Debug.Log($"Dash: {dash}");
-        Debug.Log($"Regen: {regen}");
-        Debug.Log($"HealthUp: {healthUp}");
-        Debug.Log($"SpeedUp: {speedUp}");
-        Debug.Log($"DamageUp: {damageUp}");
+        //// Debug logs for final values
+        //Debug.Log("Final values after initialization:");
+        //Debug.Log($"Level: {level}");
+        //Debug.Log($"Health: {health}");
+        //Debug.Log($"XP: {xp}");
+        //Debug.Log($"Dash: {dash}");
+        //Debug.Log($"Regen: {regen}");
+        //Debug.Log($"HealthUp: {healthUp}");
+        //Debug.Log($"SpeedUp: {speedUp}");
+        //Debug.Log($"DamageUp: {damageUp}");
     }
 }

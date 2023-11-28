@@ -11,9 +11,16 @@ public class TransitionOne : MonoBehaviour
     {
         // Retrieve the latest level value from SavingManager
         int latestLevel = sm.level;
+        int enemiesKilled = sm.enemiesKilled;
+        float damageTaken = sm.damageTaken;
+        float timeSurvived = sm.timeSurvived;
 
         // Update the text with the latest level value
         levelComplete.text = "Level Complete!\n\n" +
-            "Stats:\r\nTotal Time Survived: \r\nCurrent Level: " + latestLevel + "\r\nEnemies Killed: \r\nDamage Taken: \r\n\r\nContinue?\r\n\r\nTip: Acid Does 10 Damage, Be Wary";
+            "Stats:\r\nTotal Time Survived: " + Mathf.RoundToInt(timeSurvived) + " Seconds" +
+            "\r\nCurrent Level: " + latestLevel + 
+            "\r\nEnemies Killed: " + enemiesKilled + 
+            "\r\nDamage Taken: " + damageTaken + 
+            "\r\n\r\nContinue?\r\n\r\nTip: Acid Does 10 Damage, Be Wary";
     }
 }

@@ -7,6 +7,7 @@ public class EnemyHealth : MonoBehaviour
     private Transform player;
     private LevelSystem playerLevel;
     public EnemyController eController;
+    private PlayerAttack playerAttack;
 
     [SerializeField]
     public float eHealth = 100;
@@ -15,6 +16,7 @@ public class EnemyHealth : MonoBehaviour
     public void Start()
     {
         player = GameObject.FindWithTag("Player").transform;
+        playerAttack = GameObject.FindWithTag("Player").GetComponent<PlayerAttack>();
         playerLevel = player.GetComponent<LevelSystem>();
 
         // Add a Rigidbody2D component to the enemy
@@ -67,6 +69,7 @@ public class EnemyHealth : MonoBehaviour
         if (eHealth <= 0)
         {
             Die();
+            playerAttack.enemiesKilled++;
         }
     }
 
