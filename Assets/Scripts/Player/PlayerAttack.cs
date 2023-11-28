@@ -51,6 +51,35 @@ public class PlayerAttack : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            animator.SetBool("HasAxe", false);
+            animator.SetBool("HasBow", false);
+            animator.SetBool("HasSword", true);
+            if (playerMovement.moveSpeed < 7.5f)
+            {
+                playerMovement.moveSpeed += 5;
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            animator.SetBool("HasSword", false);
+            animator.SetBool("HasBow", false);
+            animator.SetBool("HasAxe", true);
+        }
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            animator.SetBool("HasAxe", false);
+            animator.SetBool("HasSword", false);
+            animator.SetBool("HasBow", true);
+            if (playerMovement.moveSpeed < 7.5f)
+            {
+                playerMovement.moveSpeed += 5;
+            }
+        }
+
         hasSword = animator.GetBool("HasSword");
         hasAxe = animator.GetBool("HasAxe");
         hasBow = animator.GetBool("HasBow");
@@ -257,6 +286,7 @@ public class PlayerAttack : MonoBehaviour
         if (currentAxeDurability == 0)
         {
             SwitchToRegularAttack();
+            playerMovement.moveSpeed += 5;
         }
     }
 
@@ -317,7 +347,7 @@ public class PlayerAttack : MonoBehaviour
         animator.SetBool("isAttack", false);
         if (playerMovement.moveSpeed < 7.5f)
         {
-            playerMovement.moveSpeed = 7.5f;
+            playerMovement.moveSpeed += 5;
         }
     }
 }
