@@ -9,6 +9,7 @@ public class LootDrop : MonoBehaviour
     private Collider2D col;
     private LootType lootType;
     private Animator playerAnimator;
+    private PlayerMovement playerMovement;
 
     public void SetDropType(LootType type)
     {
@@ -18,6 +19,8 @@ public class LootDrop : MonoBehaviour
     private void Start()
     {
         playerAnimator = GameObject.FindWithTag("Player").GetComponent<Animator>();
+        playerMovement = GameObject.FindWithTag("Player").GetComponent<PlayerMovement>();
+
 
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
@@ -32,19 +35,33 @@ public class LootDrop : MonoBehaviour
             case LootType.Sword:
                 playerAnimator.SetBool("isBowAttack", false);
                 playerAnimator.SetBool("isAxeAttack", false);
+                playerAnimator.SetBool("HasAxe", false);
+                playerAnimator.SetBool("HasBow", false);
                 playerAnimator.SetBool("HasSword", true);
+                if (playerMovement.moveSpeed < 7.5f)
+                {
+                    playerMovement.moveSpeed = 7.5f;
+                }
                 //attackArea.WeaponDamage(10);
                 break;
             case LootType.Axe:
                 playerAnimator.SetBool("isBowAttack", false);
                 playerAnimator.SetBool("isSwordAttack", false);
+                playerAnimator.SetBool("HasSword", false);
+                playerAnimator.SetBool("HasBow", false);
                 playerAnimator.SetBool("HasAxe", true);
                 //attackArea.WeaponDamage(20);
                 break;
             case LootType.Bow:
                 playerAnimator.SetBool("isSwordAttack", false);
                 playerAnimator.SetBool("isAxeAttack", false);
+                playerAnimator.SetBool("HasAxe", false);
+                playerAnimator.SetBool("HasSword", false);
                 playerAnimator.SetBool("HasBow", true);
+                if (playerMovement.moveSpeed < 7.5f)
+                {
+                    playerMovement.moveSpeed = 7.5f;
+                }
                 //attackArea.WeaponDamage(5);
                 break;
         }

@@ -21,6 +21,7 @@ public class EnemyController : MonoBehaviour
     public float enemyXP;
     public float XPMultiplier;
 
+    public bool stunned;
     private Vector3 wanderDirection;
     private float wanderInterval = 2.0f;
     private float wanderTimer;
@@ -47,6 +48,7 @@ public class EnemyController : MonoBehaviour
 
         // Enemy is a Higher Level than the Player
         enemyXP = Mathf.Round(enemyLevel * 6 * XPMultiplier);
+        stunned = false;
     }
 
     void Update()
@@ -54,7 +56,7 @@ public class EnemyController : MonoBehaviour
         if (player != null)
         {
             float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-
+            if (stunned) return;
             switch (currentState)
             {
                 case EnemyState.Wander:
@@ -123,6 +125,20 @@ public class EnemyController : MonoBehaviour
     void SwitchToWanderState()
     {
         currentState = EnemyState.Wander;
+    }
+
+    public void Stun(float time)
+    {
+        if (stunned) return;
+        else stunned = true;
+
+        StartCoroutine(StunForSeconds(time));
+    }
+
+    IEnumerator StunForSeconds(float time)
+    {
+        yield return new WaitForSeconds(time);
+        stunned = false;
     }
 
     private void OnTriggerEnter2D(Collider2D collider)

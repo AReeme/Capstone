@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Goople
   m_EditorClassIdentifier: 
   hp: 15
-  damage: 5
+  damage: 10
   speed: 3

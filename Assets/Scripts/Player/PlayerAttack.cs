@@ -20,6 +20,7 @@ public class PlayerAttack : MonoBehaviour
     private float timeToAttack = 0.25f;
     private float timer = 0f;
     public Animator animator;
+    public PlayerMovement playerMovement;
 
     [Header("Bow Settings")]
     [SerializeField] Transform hand;
@@ -311,5 +312,9 @@ public class PlayerAttack : MonoBehaviour
         animator.SetBool("isAxeAttack", false);
         animator.SetBool("isBowAttack", false);
         animator.SetBool("isAttack", false);
+        if (playerMovement.moveSpeed < 7.5f)
+        {
+            playerMovement.moveSpeed = 7.5f;
+        }
     }
 }

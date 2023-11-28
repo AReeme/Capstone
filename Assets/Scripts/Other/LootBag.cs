@@ -15,9 +15,7 @@ public class LootBag : MonoBehaviour
 
     private void Start()
     {
-        playerAnimator = GameObject.FindWithTag("Player").GetComponent<Animator>();
-        playerMovement = GameObject.FindWithTag("Player").GetComponent<PlayerMovement>();
-
+        
         //// Get the AttackArea component from the player's children
         //attackArea = GameObject.FindWithTag("Player").GetComponentInChildren<AttackArea>();
 
@@ -54,9 +52,7 @@ public class LootBag : MonoBehaviour
 
     public void InstantiateLoot(Vector3 spawnPosition)
     {
-        if (!hasSpawnedLoot)
-        {
-            Loot droppedItem = GetDroppedItem();
+             Loot droppedItem = GetDroppedItem();
             if (droppedItem != null)
             {
                 lootTypeToApply = droppedItem.lootType;
@@ -75,4 +71,3 @@ public class LootBag : MonoBehaviour
             }
         }
     }
-}

@@ -436,8 +436,9 @@ MonoBehaviour:
   axeSwing: {fileID: 8996958613306167699}
   bowAttack: {fileID: 2245159350731331299}
   punchAttack: {fileID: 4728038556432991990}
-  arrowScript: {fileID: 0}
+  arrowScript: {fileID: 7259155299278180596, guid: c0b0f792430f8c648b584ca32444e3d3, type: 3}
   animator: {fileID: 1883191349059987489}
+  playerMovement: {fileID: 1883191349059987494}
   hand: {fileID: 1095190802997537493}
   arrowPrefab: {fileID: 3289087504912833589, guid: c0b0f792430f8c648b584ca32444e3d3, type: 3}
   arrowSpeed: 10
@@ -1189,10 +1190,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.027613863, y: -1.4965256}
-      - {x: -1.718074, y: 0.01742211}
-      - {x: -0.011914568, y: 1.5133495}
-      - {x: 1.7389693, y: -0.0005162209}
+    - - {x: 0.013975052, y: -1.0464448}
+      - {x: -1.1384243, y: -0.023494331}
+      - {x: -0.06646982, y: 1.1041851}
+      - {x: 1.097945, y: 0.0063031837}
 --- !u!114 &8986481686862843738
 MonoBehaviour:
   m_ObjectHideFlags: 0

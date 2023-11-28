@@ -14,7 +14,7 @@ public class AttackArea : MonoBehaviour
     public Animator animator;
     public Arrow arrowScript;
     [SerializeField]
-    private float strength = 16, delay = 0.15f;
+    private float strength = 16, delay = 1.0f;
     public UnityEvent OnBegin, OnDone;
 
     [Header("Damage Abilities")]
@@ -95,18 +95,13 @@ public class AttackArea : MonoBehaviour
 
     private void ApplyKnockback(GameObject enemy)
     {
-        // Check if the enemy has a Rigidbody2D component
         Rigidbody2D enemyRigidbody = enemy.GetComponent<Rigidbody2D>();
         if (enemyRigidbody != null)
         {
-            // Calculate the direction from this object to the enemy
             Vector2 direction = (enemy.transform.position - transform.position).normalized;
-
-            // Apply an impulse force to the enemy's Rigidbody2D
+            enemy.GetComponent<EnemyController>().Stun(delay);
             enemyRigidbody.AddForce(direction * strength, ForceMode2D.Impulse);
-
-            // Start the coroutine to reset the velocity
-            StartCoroutine(Reset(enemyRigidbody));
+            //StartCoroutine(Reset(enemyRigidbody));
         }
     }
 
