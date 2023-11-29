@@ -673,6 +673,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56b3c40be5b6c6f4eb45e078220d8e22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gv: {fileID: 0}
 --- !u!4 &1100687078
 Transform:
   m_ObjectHideFlags: 0
@@ -1272,7 +1273,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Game Over....
+  m_text: 'Game Over...
 
 
     You Tried So Hard, But Only Got So Far
@@ -1374,3 +1375,5 @@ MonoBehaviour:
   quitGameButton: {fileID: 730676128}
   saveGameButton: {fileID: 730676128}
   transitionOne: {fileID: 0}
+  transitionTwo: {fileID: 0}
+  transitionThree: {fileID: 0}

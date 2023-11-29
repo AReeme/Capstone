@@ -55,7 +55,7 @@ public class Health : MonoBehaviour
     {
         health = Mathf.Clamp(health, 0, MAX_HEATH);
         UpdateHealthUI();
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.C))
         {
             Damage(Random.Range(5, 10));
         }

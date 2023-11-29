@@ -84,7 +84,7 @@ public class PlayerAttack : MonoBehaviour
         hasAxe = animator.GetBool("HasAxe");
         hasBow = animator.GetBool("HasBow");
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
         {
             Attack();
         }

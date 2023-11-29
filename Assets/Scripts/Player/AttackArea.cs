@@ -95,13 +95,16 @@ public class AttackArea : MonoBehaviour
 
     private void ApplyKnockback(GameObject enemy)
     {
-        Rigidbody2D enemyRigidbody = enemy.GetComponent<Rigidbody2D>();
-        if (enemyRigidbody != null)
+        if (!enemy.CompareTag("Dragon"))
         {
-            Vector2 direction = (enemy.transform.position - transform.position).normalized;
-            enemy.GetComponent<EnemyController>().Stun(delay);
-            enemyRigidbody.AddForce(direction * strength, ForceMode2D.Impulse);
-            //StartCoroutine(Reset(enemyRigidbody));
+            Rigidbody2D enemyRigidbody = enemy.GetComponent<Rigidbody2D>();
+            if (enemyRigidbody != null)
+            {
+                Vector2 direction = (enemy.transform.position - transform.position).normalized;
+                enemy.GetComponent<EnemyController>().Stun(delay);
+                enemyRigidbody.AddForce(direction * strength, ForceMode2D.Impulse);
+                //StartCoroutine(Reset(enemyRigidbody));
+            }
         }
     }
 
