@@ -35,4 +35,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Game Levels/Level 3 - 4 Transition.unity
     guid: 4000fa03d027eb546a6afffbc1fc8b62
+  - enabled: 1
+    path: Assets/Scenes/Game Levels/Credits.unity
+    guid: a87eaee31fe489440b52e451ffe407f5
+  - enabled: 1
+    path: Assets/Scenes/Game Levels/Win Screen.unity
+    guid: 87dcf75572d289c42a027c54cd076a44
   m_configObjects: {}

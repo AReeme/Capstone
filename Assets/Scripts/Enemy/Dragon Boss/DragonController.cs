@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DragonController : MonoBehaviour
@@ -7,9 +6,9 @@ public class DragonController : MonoBehaviour
     [Header("Stats")]
     public float health = 200;
     public int damage = 30;
-    public int moveSpeed = 5;
-    public int chaseRange = 5;
-    public int attackRange = 2;
+    public int moveSpeed = 3;
+    public int chaseRange = 10;
+    public int attackRange = 3;
 
     [Header("Inspector Items")]
     [SerializeField] public Rigidbody2D rb;
@@ -18,7 +17,12 @@ public class DragonController : MonoBehaviour
 
     [Header("Scene Objects")]
     [SerializeField] public GameObject sceneTransition;
-    //[SerializeField] public AudioSource victoryTheme;
+    [SerializeField] public AudioSource victoryTheme;
+    [SerializeField] public AudioSource bossMusic;
+
+    [Header("Attack Settings")]
+    [SerializeField] public GameObject attackArea;
+    public float attackDuration = 1f;
 
     private enum EnemyState
     {
@@ -33,11 +37,8 @@ public class DragonController : MonoBehaviour
     {
         player = GameObject.FindWithTag("Player").transform;
         currentState = EnemyState.Idle;
-    }
-
-    private void Start()
-    {
-        
+        bossMusic.Play();
+        attackArea.SetActive(false);
     }
 
     void Update()
@@ -128,7 +129,11 @@ public class DragonController : MonoBehaviour
 
     void Attack()
     {
-        animator.SetBool("isAttack", true);
+        if (!animator.GetBool("isAttack"))
+        {
+            animator.SetBool("isAttack", true);
+            StartCoroutine(EnableAttackAreaDuringAttack());
+        }
 
         animator.SetFloat("Horizontal", rb.velocity.x);
         animator.SetFloat("Vertical", rb.velocity.y);
@@ -152,6 +157,7 @@ public class DragonController : MonoBehaviour
 
     void SwitchToChaseState()
     {
+        animator.SetBool("isAttack", false);
         currentState = EnemyState.Chase;
     }
 
@@ -186,6 +192,14 @@ public class DragonController : MonoBehaviour
         }
     }
 
+    IEnumerator EnableAttackAreaDuringAttack()
+    {
+        attackArea.SetActive(true);
+        yield return new WaitForSeconds(attackDuration);
+        attackArea.SetActive(false);
+        animator.SetBool("isAttack", false);
+    }
+
     private IEnumerator VisualIndicator(Color color)
     {
         GetComponent<SpriteRenderer>().color = color;
@@ -196,13 +210,14 @@ public class DragonController : MonoBehaviour
     private void Die()
     {
         Death();
-        StartCoroutine(DestroyDelay());
         Destroy(gameObject);
         sceneTransition.SetActive(true);
+        bossMusic.Stop();
+        victoryTheme.Play();
     }
 
     private IEnumerator DestroyDelay()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3f);
     }
 }
