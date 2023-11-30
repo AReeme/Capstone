@@ -129159,6 +129159,17 @@ RectTransform:
   m_AnchoredPosition: {x: 43.95996, y: -45.977966}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0, y: 1}
+--- !u!114 &1024659232 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3646169021876233861, guid: 8a3566bda6bc60a4490605f6d3e5ad75, type: 3}
+  m_PrefabInstance: {fileID: 777273664}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8191a65b76c9064b8f9994c064909d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1052056542
 GameObject:
   m_ObjectHideFlags: 0
@@ -129199,7 +129210,7 @@ MonoBehaviour:
   healthUpAbility: {fileID: 777273665}
   damageUpAbility: {fileID: 777273667}
   speedAbility: {fileID: 777273668}
-  playerAttack: {fileID: 0}
+  playerAttack: {fileID: 1024659232}
   sceneToLoad: Title Screen
 --- !u!61 &1052056544
 BoxCollider2D:
@@ -134661,6 +134672,7 @@ MonoBehaviour:
   rb: {fileID: 2114276322}
   animator: {fileID: 2114276317}
   player: {fileID: 1109074737}
+  sceneTransition: {fileID: 1052056542}
 --- !u!61 &2114276321
 BoxCollider2D:
   m_ObjectHideFlags: 0

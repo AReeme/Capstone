@@ -9,37 +9,54 @@ public class DragonController : MonoBehaviour
     public int damage = 30;
     public int moveSpeed = 5;
     public int chaseRange = 5;
-    public int attackRange = 1;
-    private bool isAlive;
+    public int attackRange = 2;
 
     [Header("Inspector Items")]
     [SerializeField] public Rigidbody2D rb;
     [SerializeField] public Animator animator;
     [SerializeField] public Transform player;
 
+    [Header("Scene Objects")]
+    [SerializeField] public GameObject sceneTransition;
+    //[SerializeField] public AudioSource victoryTheme;
+
     private enum EnemyState
     {
         Idle,
         Chase,
-        Attack
+        Attack,
+        Death
     }
     private EnemyState currentState;
 
     private void Awake()
     {
         player = GameObject.FindWithTag("Player").transform;
-        isAlive = true;
         currentState = EnemyState.Idle;
+    }
+
+    private void Start()
+    {
+        
     }
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            SwitchToDeathState();
+        }
+
         if (player != null)
         {
             float distanceToPlayer = Vector3.Distance(transform.position, player.position);
             switch (currentState)
             {
                 case EnemyState.Idle:
+                    if (health <= 0)
+                    {
+                        SwitchToDeathState();
+                    }
                     if (distanceToPlayer <= attackRange)
                     {
                         SwitchToAttackState();
@@ -51,7 +68,11 @@ public class DragonController : MonoBehaviour
                     Idle();
                     break;
                 case EnemyState.Chase:
-                    if (distanceToPlayer <= attackRange) 
+                    if (health <= 0)
+                    {
+                        SwitchToDeathState();
+                    }
+                    if (distanceToPlayer <= attackRange)
                     {
                         SwitchToAttackState();
                     }
@@ -62,11 +83,18 @@ public class DragonController : MonoBehaviour
                     Chase();
                     break;
                 case EnemyState.Attack:
-                    if(distanceToPlayer > attackRange)
+                    if (health <= 0)
+                    {
+                        SwitchToDeathState();
+                    }
+                    if (distanceToPlayer > attackRange)
                     {
                         SwitchToChaseState();
                     }
-
+                    Attack();
+                    break;
+                case EnemyState.Death:
+                    Die();
                     break;
             }
         }
@@ -78,7 +106,6 @@ public class DragonController : MonoBehaviour
 
         rb.velocity = directionToPlayer * moveSpeed;
 
-        // Set animator parameters for animation (same for Wander and Chase).
         animator.SetFloat("Horizontal", rb.velocity.x);
         animator.SetFloat("Vertical", rb.velocity.y);
         animator.SetFloat("Speed", rb.velocity.magnitude);
@@ -92,7 +119,6 @@ public class DragonController : MonoBehaviour
 
         rb.velocity = directionToPlayer * 0.01f;
 
-        // Set animator parameters for animation (same for Wander and Chase).
         animator.SetFloat("Horizontal", rb.velocity.x);
         animator.SetFloat("Vertical", rb.velocity.y);
         animator.SetFloat("Speed", rb.velocity.magnitude);
@@ -102,6 +128,25 @@ public class DragonController : MonoBehaviour
 
     void Attack()
     {
+        animator.SetBool("isAttack", true);
+
+        animator.SetFloat("Horizontal", rb.velocity.x);
+        animator.SetFloat("Vertical", rb.velocity.y);
+        animator.SetFloat("Speed", rb.velocity.magnitude);
+        animator.SetFloat("Last_Horizontal", rb.velocity.x);
+        animator.SetFloat("Last_Vertical", rb.velocity.y);
+    }
+
+    void Death()
+    {
+        rb.velocity = Vector3.zero;
+        animator.SetTrigger("Death");
+
+        animator.SetFloat("Horizontal", rb.velocity.x);
+        animator.SetFloat("Vertical", rb.velocity.y);
+        animator.SetFloat("Speed", rb.velocity.magnitude);
+        animator.SetFloat("Last_Horizontal", rb.velocity.x);
+        animator.SetFloat("Last_Vertical", rb.velocity.y);
 
     }
 
@@ -120,6 +165,27 @@ public class DragonController : MonoBehaviour
         currentState = EnemyState.Attack;
     }
 
+    void SwitchToDeathState()
+    {
+        currentState = EnemyState.Death;
+    }
+
+    public void Damage(float amount)
+    {
+        if (amount < 0)
+        {
+            throw new System.ArgumentOutOfRangeException("Cannot have negative damage.");
+        }
+
+        health -= amount;
+        StartCoroutine(VisualIndicator(Color.black));
+
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
     private IEnumerator VisualIndicator(Color color)
     {
         GetComponent<SpriteRenderer>().color = color;
@@ -129,6 +195,14 @@ public class DragonController : MonoBehaviour
 
     private void Die()
     {
+        Death();
+        StartCoroutine(DestroyDelay());
         Destroy(gameObject);
+        sceneTransition.SetActive(true);
+    }
+
+    private IEnumerator DestroyDelay()
+    {
+        yield return new WaitForSeconds(5f);
     }
 }

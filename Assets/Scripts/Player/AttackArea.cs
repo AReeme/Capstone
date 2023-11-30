@@ -69,6 +69,12 @@ public class AttackArea : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
+        if (collider.GetComponent<DragonController>() != null)
+        {
+            DragonController health = collider.GetComponent<DragonController>();
+            health.Damage(damage);
+        }
+
         if (collider.GetComponent<EnemyHealth>() != null)
         {
             EnemyHealth health = collider.GetComponent<EnemyHealth>();
@@ -95,16 +101,13 @@ public class AttackArea : MonoBehaviour
 
     private void ApplyKnockback(GameObject enemy)
     {
-        if (!enemy.CompareTag("Dragon"))
+        Rigidbody2D enemyRigidbody = enemy.GetComponent<Rigidbody2D>();
+        if (enemyRigidbody != null)
         {
-            Rigidbody2D enemyRigidbody = enemy.GetComponent<Rigidbody2D>();
-            if (enemyRigidbody != null)
-            {
-                Vector2 direction = (enemy.transform.position - transform.position).normalized;
-                enemy.GetComponent<EnemyController>().Stun(delay);
-                enemyRigidbody.AddForce(direction * strength, ForceMode2D.Impulse);
-                //StartCoroutine(Reset(enemyRigidbody));
-            }
+            Vector2 direction = (enemy.transform.position - transform.position).normalized;
+            enemy.GetComponent<EnemyController>().Stun(delay);
+            enemyRigidbody.AddForce(direction * strength, ForceMode2D.Impulse);
+            //StartCoroutine(Reset(enemyRigidbody));
         }
     }
 
